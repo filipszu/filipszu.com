@@ -79,7 +79,9 @@ function createWords(data){
 						var blackDataObj = data[z + i];
 						canvas.width = dataObj.width;
 						canvas.height = dataObj.height;
-						ctx.drawImage(words, blackDataObj.x, blackDataObj.y, dataObj.width, dataObj.height, 0, 0, dataObj.width, dataObj.height);
+						//ctx.drawImage(words, blackDataObj.x, blackDataObj.y, dataObj.width, dataObj.height, 0, 0, dataObj.width, dataObj.height);
+						ctx.font = "20px Georgia";
+						ctx.fillText("Hello World!", 0, 0);
 						word.colors.push(canvas);
 					}
 									
@@ -140,14 +142,33 @@ function display(){
 	var c=document.getElementById("back");
 
 	c.width = c.width;
+	
 	for (var i = 0; i < wordsOnScreen.length; i++){
 		var ctx=c.getContext("2d");
 		var word = wordsOnScreen[i];
 		animWord(word);
 		ctx.globalAlpha = word.getAlpha();
-		ctx.drawImage(word.currentColor, word.x, word.y, word.width * word.getAlpha(), word.height * word.getAlpha());	
-		
+		var wordTxt = getNewWord(word.txt);
+		ctx.drawImage(wordTxt, word.x, word.y, 150 * word.getAlpha(), 100 * word.getAlpha());	
+		//ctx.font = `${Math.floor(word.getAlpha() * 44)}px MyPhoneN1280Regular`;
+		//ctx.fillText(word.txt, word.x, word.y);
 	}
+	
+
+	//var ctx = c.getContext('2d');
+	//document.body.append(word);
+	//ctx.drawImage(word, 100, 100, 150, 100);	
+}
+
+function getNewWord(txt){
+	var canvas = document.createElement('canvas');
+	var ctx = canvas.getContext('2d');
+	canvas.width = 150;
+	canvas.height = 100;
+	ctx.textBaseline = "top";
+	ctx.font = "44px MyPhoneN1280Regular";
+	ctx.fillText(txt, 0, 0);
+	return canvas;
 }
 
 function animWord(word){
