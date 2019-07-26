@@ -132,43 +132,62 @@ function showWidgets(){
 }
 
 function loop(){
-
 	display();
-	
 	window.requestAnimFrame(loop);
 }
 
 function display(){
-	var c=document.getElementById("back");
+	var c=document.getElementById("back"),
+		ctx=c.getContext("2d");
 
-	c.width = c.width;
-	
-	for (var i = 0; i < wordsOnScreen.length; i++){
-		var ctx=c.getContext("2d");
-		var word = wordsOnScreen[i];
+	c.width = c.width; //hack to clean the canvas
+
+	wordsOnScreen.forEach(function(word){
 		animWord(word);
 		ctx.globalAlpha = word.getAlpha();
 		var wordTxt = getNewWord(word.txt);
-		ctx.drawImage(wordTxt, word.x, word.y, 150 * word.getAlpha(), 100 * word.getAlpha());	
-		//ctx.font = `${Math.floor(word.getAlpha() * 44)}px MyPhoneN1280Regular`;
-		//ctx.fillText(word.txt, word.x, word.y);
-	}
+		ctx.drawImage(wordTxt, word.x, word.y, wordTxt.width * word.getAlpha(), wordTxt.height * word.getAlpha());
+	});
 	
+	// Usefull code to check once going on for a single word.
+	// comment the loop out and check what a single word does.
 
 	//var ctx = c.getContext('2d');
+	//var word = getNewWord('test word');
+	//word.width = word.width * 2;
 	//document.body.append(word);
 	//ctx.drawImage(word, 100, 100, 150, 100);	
+
 }
 
 function getNewWord(txt){
-	var canvas = document.createElement('canvas');
-	var ctx = canvas.getContext('2d');
-	canvas.width = 150;
-	canvas.height = 100;
-	ctx.textBaseline = "top";
-	ctx.font = "44px MyPhoneN1280Regular";
+	var canvas = document.createElement('canvas'),
+		ctx = canvas.getContext('2d'),
+		calculatedWidth = 0,
+		textBaseline = "top",
+		font = "44px MyPhoneN1280Regular";
+	
+		ctx.textBaseline = textBaseline;
+	ctx.font = font;
+	calculatedWidth = ctx.measureText(txt).width;
+	resizeCanvas(canvas, calculatedWidth, 44);
+	ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
+	ctx.font = font;
 	ctx.fillText(txt, 0, 0);
 	return canvas;
+}
+
+function resizeCanvas(canvas, width, height){
+	if(canvas && canvas instanceof HTMLCanvasElement && width && height){
+		var ctx = canvas.getContext('2d');
+		canvas.width = width;
+		canvas.height = height;
+		canvas.style.width  = `${width}px`;
+		canvas.style.height = `${height}px`;
+
+	}else{
+		throw Error("Bad arguments provided.");
+	}
 }
 
 function animWord(word){
