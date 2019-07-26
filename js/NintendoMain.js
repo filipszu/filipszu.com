@@ -64,27 +64,13 @@ function loadJSONData(json){
 }
 
 function createWords(data){
-		
 		var wordsArray = new Array();
 		var count = 0;
 		for(var z = 0; z < data.length; z++){
 			var dataObj = data[z];
 			if(dataObj.name !== name){
 				name = dataObj.name;
-				var word = new Word(name, count, 0, 0, dataObj.width, dataObj.height, Math.random());
-					
-					for(var i = 0; i < colorCount; i++){
-						var canvas = document.createElement('canvas');
-						var ctx = canvas.getContext('2d');
-						var blackDataObj = data[z + i];
-						canvas.width = dataObj.width;
-						canvas.height = dataObj.height;
-						//ctx.drawImage(words, blackDataObj.x, blackDataObj.y, dataObj.width, dataObj.height, 0, 0, dataObj.width, dataObj.height);
-						ctx.font = "20px Georgia";
-						ctx.fillText("Hello World!", 0, 0);
-						word.colors.push(canvas);
-					}
-									
+				var word = new Word(name, count, 0, 0, dataObj.width, dataObj.height, Math.random());				
 					wordsArray.push(word);
 				count++;
 			}
@@ -93,21 +79,13 @@ function createWords(data){
 }	
 
 function createWordsOnScreen(wordObjs){
-	
 	for(var i = 0; i < wordObjs.length * wordMultipier; i++){
 		var j = i % wordObjs.length;
 		var origin = wordObjs[j];
 		var clone = jQuery.extend(true, {}, origin);
-		if(i%2==0){
-			clone.currentColor = clone.colors[0];	
-		}else if(i%3==0){
-			clone.currentColor = clone.colors[1];
-		}else{
-			clone.currentColor = clone.colors[2];
-		}
-		clone.colors = null;
+		//Initial word placement on screen
 		clone.x = Math.random()*canvasSize.width;
-		clone.y = Math.random()*canvasSize.height
+		clone.y = Math.random()*canvasSize.height;
 		wordsOnScreen.push(clone);
 	}
 }

@@ -16,10 +16,6 @@
 		this.vy = 0;
 		this.vz = 0;
 		this.index = _wordNum;
-		
-
-		this.colors = new Array();
-		this.currentColor = null;
 	}
 	
 	Word.prototype.getAlpha = function(){
