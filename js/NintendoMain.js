@@ -25,6 +25,19 @@ var aboutText = '<p>Hi,<br />'+
 var aboutTextLength = 0;
 var colorCount = 3;
 var colors = ["#FFFFFF", "#000000", "#CB0077", "#A2EF00"];
+var wordTags = [
+    {"name": "Javascript"},
+    {"name": "Typescript"},
+    {"name": "HTML"},
+    {"name": "CSS"},
+    {"name": "SASS"},
+    {"name": "C#"},
+    {"name": "Python"},
+    {"name": "XCP-ng"},
+    {"name": "Bash"},
+    {"name": "Nginx"},
+    {"name": "Linux"}
+]
 
 window.requestAnimFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -51,7 +64,7 @@ function init(){
 		$(window).resize(function(){
 				setCanvas();
 		});
-		$.getJSON(JSON_FILE, loadJSONData );
+		loadJSONData();
 	};
 	words.src = SS_FILE;
 }
@@ -66,10 +79,10 @@ function loadJSONData(json){
 function createWords(data){
 		var wordsArray = new Array();
 		var count = 0;
-		data.forEach(function(dataObj){
+		wordTags.forEach(function(dataObj){
 			if(dataObj.name !== name){
 				name = dataObj.name;
-				var word = new Word(name, count, 0, 0, dataObj.width, dataObj.height, Math.random());				
+				var word = new Word(name, count, 0, 0, 0, 0, Math.random());				
 					wordsArray.push(word);
 				count++;
 			}
@@ -149,7 +162,8 @@ function getWordCanvas(word){
 		calculatedWidth = 0,
 		word = word || {},
 		textBaseline = "top",
-		font = "44px MyPhoneN1280Regular",
+		fontSize = 44,
+		font = `${fontSize}px MyPhoneN1280Regular`,
 		fillStyle = word.currentColor || "#000000",
 		txt = word.txt || "Test Word";
 	
@@ -157,11 +171,14 @@ function getWordCanvas(word){
 	ctx.font = font;
 	ctx.fillStyle = fillStyle;
 	calculatedWidth = ctx.measureText(txt).width;
-	resizeCanvas(canvas, calculatedWidth, 44);
+	resizeCanvas(canvas, calculatedWidth, fontSize);
 	ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
 	ctx.font = font;
 	ctx.fillStyle = fillStyle;
 	ctx.fillText(txt, 0, 0);
+	word.width = calculatedWidth;
+	word.height = fontSize;
+
 	return canvas;
 }
 
