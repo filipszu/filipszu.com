@@ -24,7 +24,7 @@ var aboutText = '<p>Hi,<br />'+
 				' <span class="textPurple">mobile development</span>, creating <span class="textPurple">e-marketing campaigns</span>, <span class="textPurple">video delivery</span> and <span class="textPurple">game development</span>.';
 var aboutTextLength = 0;
 var colorCount = 3;
-var colors = ["#000000", "#CB0077", "#A2EF00"];
+var colors = ["#FFFFFF", "#000000", "#CB0077", "#A2EF00"];
 
 window.requestAnimFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -83,10 +83,12 @@ function createWordsOnScreen(wordObjs){
 		var origin = wordObjs[j];
 		var clone = jQuery.extend(true, {}, origin);
 		clone.currentColor = colors[0];
-		if(Math.random() > .5){
-			clone.currentColor = colors[1];
-		}else if(Math.random() > .9){
+		if(Math.random() > .9){
+			clone.currentColor = colors[3];
+		}else if(Math.random() > .6){
 			clone.currentColor = colors[2];
+		}else if(Math.random() > .3){
+			clone.currentColor = colors[1];
 		}
 		//Initial word placement on screen
 		clone.x = Math.random()*canvasSize.width;
