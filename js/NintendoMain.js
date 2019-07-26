@@ -66,15 +66,14 @@ function loadJSONData(json){
 function createWords(data){
 		var wordsArray = new Array();
 		var count = 0;
-		for(var z = 0; z < data.length; z++){
-			var dataObj = data[z];
+		data.forEach(function(dataObj){
 			if(dataObj.name !== name){
 				name = dataObj.name;
 				var word = new Word(name, count, 0, 0, dataObj.width, dataObj.height, Math.random());				
 					wordsArray.push(word);
 				count++;
 			}
-		}
+		});
 		return wordsArray;
 }	
 
@@ -166,7 +165,6 @@ function getWordCanvas(word){
 
 function resizeCanvas(canvas, width, height){
 	if(canvas && canvas instanceof HTMLCanvasElement && width && height){
-		var ctx = canvas.getContext('2d');
 		canvas.width = width;
 		canvas.height = height;
 		canvas.style.width  = `${width}px`;
@@ -213,8 +211,7 @@ function animWord(word){
 function setCanvas(){
 	
 	var c=document.getElementById("back");
-	c.width = $(document).width();
-	c.height = $(document).height();
+	resizeCanvas(c, $(document).width(), $(document).height());
 	canvasSize.width = c.width;
 	canvasSize.height = c.height;
 	
