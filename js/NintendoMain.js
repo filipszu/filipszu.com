@@ -24,6 +24,7 @@ var aboutText = '<p>Hi,<br />'+
 				' <span class="textPurple">mobile development</span>, creating <span class="textPurple">e-marketing campaigns</span>, <span class="textPurple">video delivery</span> and <span class="textPurple">game development</span>.';
 var aboutTextLength = 0;
 var colorCount = 3;
+var colors = ["#000000", "#CB0077", "#A2EF00"];
 
 window.requestAnimFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -56,7 +57,6 @@ function init(){
 }
 
 function loadJSONData(json){
-	
 	var wordsArray = createWords(json);
 	words = null;
 	createWordsOnScreen(wordsArray);
@@ -83,6 +83,12 @@ function createWordsOnScreen(wordObjs){
 		var j = i % wordObjs.length;
 		var origin = wordObjs[j];
 		var clone = jQuery.extend(true, {}, origin);
+		clone.currentColor = colors[0];
+		if(Math.random() > .5){
+			clone.currentColor = colors[1];
+		}else if(Math.random() > .9){
+			clone.currentColor = colors[2];
+		}
 		//Initial word placement on screen
 		clone.x = Math.random()*canvasSize.width;
 		clone.y = Math.random()*canvasSize.height;
@@ -123,34 +129,37 @@ function display(){
 	wordsOnScreen.forEach(function(word){
 		animWord(word);
 		ctx.globalAlpha = word.getAlpha();
-		var wordTxt = getNewWord(word.txt);
+		var wordTxt = getWordCanvas(word);
 		ctx.drawImage(wordTxt, word.x, word.y, wordTxt.width * word.getAlpha(), wordTxt.height * word.getAlpha());
 	});
-	
+
 	// Usefull code to check once going on for a single word.
 	// comment the loop out and check what a single word does.
 
-	//var ctx = c.getContext('2d');
-	//var word = getNewWord('test word');
-	//word.width = word.width * 2;
+	//var word = getWordCanvas();
 	//document.body.append(word);
 	//ctx.drawImage(word, 100, 100, 150, 100);	
 
 }
 
-function getNewWord(txt){
+function getWordCanvas(word){
 	var canvas = document.createElement('canvas'),
 		ctx = canvas.getContext('2d'),
 		calculatedWidth = 0,
+		word = word || {},
 		textBaseline = "top",
-		font = "44px MyPhoneN1280Regular";
+		font = "44px MyPhoneN1280Regular",
+		fillStyle = word.currentColor || "#000000",
+		txt = word.txt || "Test Word";
 	
-		ctx.textBaseline = textBaseline;
+	ctx.textBaseline = textBaseline;
 	ctx.font = font;
+	ctx.fillStyle = fillStyle;
 	calculatedWidth = ctx.measureText(txt).width;
 	resizeCanvas(canvas, calculatedWidth, 44);
 	ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
 	ctx.font = font;
+	ctx.fillStyle = fillStyle;
 	ctx.fillText(txt, 0, 0);
 	return canvas;
 }

@@ -16,6 +16,7 @@
 		this.vy = 0;
 		this.vz = 0;
 		this.index = _wordNum;
+		this.currentColor = "#000000";
 	}
 	
 	Word.prototype.getAlpha = function(){
