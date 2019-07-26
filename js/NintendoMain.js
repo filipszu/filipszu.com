@@ -46,13 +46,13 @@ function init(){
 	var navBtns = $("nav a");
 	navBtns.each(setNavBtn);
 	
-	$(words).load(function(){
+	words.onload = function(){
 		setCanvas();
 		$(window).resize(function(){
 				setCanvas();
 		});
 		$.getJSON(JSON_FILE, loadJSONData );
-	});
+	};
 	words.src = SS_FILE;
 }
 
