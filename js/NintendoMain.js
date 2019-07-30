@@ -12,7 +12,7 @@
 var SS_FILE = 'assets/words_pack_nintendo.png';
 var JSON_FILE = 'assets/words_pack_nintendo.json';
 var BG = "url('assets/Nintendo.jpg')";
-var wordMultipier = 10;
+var wordMultipier = 15;
 var dampen = 0.95;
 var wordsOnScreen = new Array();
 var canvasSize = {width: 0, height: 0};
@@ -36,7 +36,8 @@ var wordTags = [
     {"name": "Bash"},
     {"name": "Nginx"},
     {"name": "Linux"}
-]
+];
+
 
 window.requestAnimFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -51,7 +52,6 @@ function init(){
 	
 	setTimeout ( "type()", 40 ); 
 	setTimeout ( "showWidgets()", 40 );
-	cursorAnimation();
 	
 	var navBtns = $("nav a");
 	navBtns.each(setNavBtn);
@@ -106,13 +106,14 @@ function createWordsOnScreen(wordObjs){
 }
 
 function type(){
-	$('#aboutText').html(aboutText.substr(0, aboutTextLength++));
+	$('#aboutText').html(`${aboutText.substr(0, aboutTextLength++)}<span id="textCursor">|</span>`);
   	if(aboutTextLength < aboutText.length+1){
     	//setTimeout("type()", 5);
 		window.requestAnimFrame(type);
   	}else{
     	aboutTextLength = null;
-    	aboutText = null;
+		aboutText = null;
+		cursorAnimation();
   	}
 }
 
@@ -251,12 +252,9 @@ function navBtnClick(e){
 	$(this).addClass('active');
 }
 function cursorAnimation(){
-  $("#textCursor").animate(
-  {
-    opacity: 0
-  }, "fast", "swing").animate(
-  {
-    opacity: 1
-  }, "fast", "swing", cursorAnimation);
-  
+	$("#textCursor")
+		.animate(
+			{ opacity: 0 }, "fast", "swing")
+		.animate(
+			{ opacity: 1 }, "fast", "swing", cursorAnimation);
 }

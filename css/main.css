@@ -32,7 +32,6 @@ body{
 
 header{
 	width: 100%;
-	background-color: #000000;
 }
 
 footer{
@@ -71,7 +70,7 @@ footer a:hover{
 	border: 5px dashed #CB0077;
 	z-index: 10;
 	position: relative;
-	background-color: #000000;
+	background-color: rgba(0,0,0,0.85);
 	top: 30%;
 	padding: 10px 15px 0px 15px;
 }
@@ -105,20 +104,17 @@ footer a:hover{
 }
 
 #content{
-	background-color: #000000;
 	margin-bottom: 40px;
 }
 #about{
 	color: #999999;
 	text-align: left;
 	font-size: 24px;
-	background-color: #000000;
 }
 #aboutText{
 	color: #999999;
 	text-align: left;
 	font-size: 24px;
-	background-color: #000000;
 	display: inline;
 }
 .szu-toolbar{
