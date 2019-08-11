@@ -48,9 +48,6 @@ function init(){
 	setTimeout ( "type()", 40 ); 
 	setTimeout ( "showWidgets()", 40 );
 	
-	var navBtns = $("nav a");
-	navBtns.each(setNavBtn);
-	
 	setCanvas();
 	$(window).resize(function(){
 			setCanvas();
@@ -226,25 +223,6 @@ function setCanvas(){
 	
 }
 
-function setNavBtn(index, navBtn){
-	$(this).mouseover(navBtnOver);
-	$(this).mouseout(navBtnOut);
-	$(this).click(navBtnClick);
-}
-
-function navBtnOver(e){
-	$(this).css("textDecoration", "underline");
-}
-
-function navBtnOut(e){
-	$(this).css("textDecoration", "none");
-}
-
-function navBtnClick(e){
-	var navBtns = $("nav a");
-	navBtns.removeClass('active');
-	$(this).addClass('active');
-}
 function cursorAnimation(){
 	$("#textCursor")
 		.animate(
