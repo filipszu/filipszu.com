@@ -1,5 +1,5 @@
 /*
-		http://www.filipszu.pl/
+		http://www.filipszu.com/
   ___  _  _  _        ___  ____ _   _ 
  | __|(_)| |(_) _ __ / __||_  /| | | |
  | _| | || || || '_ \\__ \ / / | |_| |
@@ -9,9 +9,6 @@
 		Follow me: @filipszu                
 */
 
-var SS_FILE = 'assets/words_pack_nintendo.png';
-var JSON_FILE = 'assets/words_pack_nintendo.json';
-var BG = "url('assets/Nintendo.jpg')";
 var wordMultipier = 15;
 var dampen = 0.95;
 var wordsOnScreen = new Array();
@@ -22,7 +19,6 @@ var aboutText = '<p>Hi,<br />'+
 				'<br />I\'m a <span class="textGreen">web geek</span> interested in all available web technologies. <span class="textPurple">Experienced in</span> developing <span class="textPurple">websites</span> ground-up, building <span class="textPurple">RIA</span>,'+
 				' <span class="textPurple">mobile development</span>, creating <span class="textPurple">e-marketing campaigns</span>, <span class="textPurple">video delivery</span> and <span class="textPurple">game development</span>.';
 var aboutTextLength = 0;
-var colorCount = 3;
 var colors = ["#FFFFFF", "#000000", "#CB0077", "#A2EF00"];
 var wordTags = [
     {"name": "Javascript"},
@@ -37,7 +33,6 @@ var wordTags = [
     {"name": "Nginx"},
     {"name": "Linux"}
 ];
-
 
 window.requestAnimFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -108,8 +103,7 @@ function createWordsOnScreen(wordObjs){
 function type(){
 	$('#aboutText').html(`${aboutText.substr(0, aboutTextLength++)}<span id="textCursor">|</span>`);
   	if(aboutTextLength < aboutText.length+1){
-    	//setTimeout("type()", 5);
-		window.requestAnimFrame(type);
+    	window.requestAnimFrame(type);
   	}else{
     	aboutTextLength = null;
 		aboutText = null;
