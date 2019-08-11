@@ -98,13 +98,12 @@ function createWordsOnScreen(wordObjs){
 }
 
 function type(){
-	$('#aboutText').html(`${aboutText.substr(0, aboutTextLength++)}<span id="textCursor">|</span>`);
+	$('#aboutText').html(`${aboutText.substr(0, aboutTextLength++)}<span id="textCursor" class="pulse">▮</span>`);
   	if(aboutTextLength < aboutText.length+1){
     	window.requestAnimFrame(type);
   	}else{
     	aboutTextLength = null;
 		aboutText = null;
-		cursorAnimation();
   	}
 }
 
@@ -221,12 +220,4 @@ function setCanvas(){
 	canvasSize.width = c.width;
 	canvasSize.height = c.height;
 	
-}
-
-function cursorAnimation(){
-	$("#textCursor")
-		.animate(
-			{ opacity: 0 }, "fast", "swing")
-		.animate(
-			{ opacity: 1 }, "fast", "swing", cursorAnimation);
 }

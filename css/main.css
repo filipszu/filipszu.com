@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'MyPhoneN1280Regular';
     src: url('../assets/my_phone_n1280-webfont.eot');
@@ -80,10 +79,10 @@ footer a:hover{
 	top: 0px;
 	left: 0px;
 }
+
 /*
 //LOGO
 */
-
 #logo{
 	font-size: 30px;
 	margin: 0px auto;
@@ -160,6 +159,22 @@ p{
 	display: none;
 	border: none;
 	text-align: center;
+}
+
+.pulse{
+	animation: blink .5s infinite;
+}
+
+@keyframes blink {
+	0% {
+	  opacity: 0;
+	}
+	50% {
+	  opacity: 1;
+	}
+	100%{
+		opacity: 0;
+	}
 }
 
 @media only screen and (max-width : 800px) {
