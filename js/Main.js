@@ -13,11 +13,13 @@ var wordMultipier = 15;
 var dampen = 0.95;
 var wordsOnScreen = new Array();
 var canvasSize = {width: 0, height: 0};
-var aboutText = '<p>Hi,<br />'+
-				'my name is <span class="textWhite">Filip Szulczewski</span>.</p>'+
-				'<p>I live and work in <span class="textWhite">Toronto</span>. I\'m <span class="textWhite">a Senior Interactive Developer</span> at <span class="textWhite">Digiflare Inc.</span>' +
-				'<br />I\'m a <span class="textGreen">web geek</span> interested in all available web technologies. <span class="textPurple">Experienced in</span> developing <span class="textPurple">websites</span> ground-up, building <span class="textPurple">RIA</span>,'+
-				' <span class="textPurple">mobile development</span>, creating <span class="textPurple">e-marketing campaigns</span>, <span class="textPurple">video delivery</span> and <span class="textPurple">game development</span>.';
+var aboutText = `Hi,<br />
+				my name is <span class="textWhite">Filip Szulczewski</span>.<br />
+				I’m an <span class="textGreen">autodidact programmer</span>, with <span class="textWhite">more than a decade</span> of <span class="textPurple">experience</span>.<br /><br />  
+				I’ve <span class="textGreen">architected</span>, <span class="textGreen">built</span> and <span class="textGreen">delivered</span> an array of <span class="textWhite">video applications</span> using <span class="textPurple">web technologies</span>. 
+				I have a <span class="textWhite">track record</span> of <span class="textWhite">succesfully</span> <span class="textGreen">augmenting teams</span> in <span class="textWhite">Professional Services</span> capacity.  
+				I have experience in working both on the <span class="textPurple">frontend</span> and the <span class="textPurple">backend</span>.  
+				I’m a <span class="textPurple">FOSS</span> enthusiast with a <span class="textPurple">DIY</span> spirit.`;
 var aboutTextLength = 0;
 var colors = ["#FFFFFF", "#000000", "#CB0077", "#A2EF00"];
 var wordTags = [
@@ -45,7 +47,7 @@ window.requestAnimFrame = window.requestAnimationFrame ||
 
 function init(){
 	
-	setTimeout ( type, 40 ); 
+	setTimeout ( type, 2000 ); 
 	
 	setCanvas();
 	$(window).resize(function(){
