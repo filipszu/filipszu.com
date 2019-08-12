@@ -45,8 +45,7 @@ window.requestAnimFrame = window.requestAnimationFrame ||
 
 function init(){
 	
-	setTimeout ( "type()", 40 ); 
-	setTimeout ( "showWidgets()", 40 );
+	setTimeout ( type, 40 ); 
 	
 	setCanvas();
 	$(window).resize(function(){
@@ -105,14 +104,6 @@ function type(){
     	aboutTextLength = null;
 		aboutText = null;
   	}
-}
-
-function showWidgets(){
-	$('#social').css('display', 'block');
-	$('#social').css('opacity', '0');
-	$("#social").animate({
-    	opacity: 1
-  	}, 400)
 }
 
 function loop(){
