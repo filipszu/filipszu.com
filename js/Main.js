@@ -15,9 +15,9 @@ var wordsOnScreen = new Array();
 var canvasSize = {width: 0, height: 0};
 var aboutText = `Hi,<br />
 				my name is <span class="textWhite">Filip Szulczewski</span>.<br />
-				I’m an <span class="textGreen">autodidact programmer</span>, with <span class="textWhite">more than a decade</span> of <span class="textPurple">experience</span>.<br /><br />  
-				I’ve <span class="textGreen">architected</span>, <span class="textGreen">built</span> and <span class="textGreen">delivered</span> an array of <span class="textWhite">video applications</span> using <span class="textPurple">web technologies</span>. 
-				I have a <span class="textWhite">track record</span> of <span class="textWhite">succesfully</span> <span class="textGreen">augmenting teams</span> in <span class="textWhite">Professional Services</span> capacity.  
+				I’m an <span class="textGreen">autodidact programmer</span>, with <span class="textWhite">more than a decade of experience</span>.<br /><br />  
+				I’ve <span class="textGreen">architected</span>, <span class="textGreen">built</span> and <span class="textGreen">delivered</span> an array of <span class="textPurple">video applications</span> using <span class="textPurple">web technologies</span>. 
+				I have a <span class="textWhite">track record</span> of <span class="textWhite">succesfully augmenting teams</span> in <span class="textWhite">Professional Services</span> capacity.  
 				I have experience in working both on the <span class="textPurple">frontend</span> and the <span class="textPurple">backend</span>.  
 				I’m a <span class="textPurple">FOSS</span> enthusiast with a <span class="textPurple">DIY</span> spirit.`;
 var aboutTextLength = 0;
