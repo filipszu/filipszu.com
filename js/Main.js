@@ -21,7 +21,13 @@ var aboutText = `Hi,<br />
 				I have experience in working both on the <span class="textPurple">frontend</span> and the <span class="textPurple">backend</span>.  
 				I’m a <span class="textPurple">FOSS</span> enthusiast with a <span class="textPurple">DIY</span> spirit.`;
 var aboutTextLength = 0;
-var colors = ["#FFFFFF", "#000000", "#CB0077", "#A2EF00"];
+var colors = [
+	{color: "#FFFFFF", weight: .3}, 
+	{color: "#000000", weight: .3}, 
+	{color: "#CB0077", weight: .3}, 
+	{color: "#A2EF00", weight: .1}
+];
+
 var wordTags = [
     {"name": "Javascript"},
     {"name": "Typescript"},
@@ -33,7 +39,8 @@ var wordTags = [
     {"name": "XCP-ng"},
     {"name": "Bash"},
     {"name": "Nginx"},
-    {"name": "Linux"}
+	{"name": "Linux"},
+	{"name": "Video Streaming"},
 ];
 
 window.requestAnimFrame = window.requestAnimationFrame ||
@@ -83,6 +90,8 @@ function createWordsOnScreen(wordObjs){
 		var j = i % wordObjs.length;
 		var origin = wordObjs[j];
 		var clone = jQuery.extend(true, {}, origin);
+		var draw = Math.random();
+		colors = colors.sort(colorObj => colorObj.weight);
 		clone.currentColor = colors[0];
 		if(Math.random() > .9){
 			clone.currentColor = colors[3];
