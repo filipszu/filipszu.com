@@ -9,7 +9,7 @@ const TypedText = (props) => {
     return (
         <div className={props.className}>
             <p>
-                <span>{props.children}</span><span class={cursorClasses}>▮</span>
+                <span dangerouslySetInnerHTML={{__html: props.children}}></span><span class={cursorClasses}>▮</span>
             </p>
         </div>
     );
