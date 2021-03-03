@@ -21,7 +21,7 @@ const MainCard = (props) => {
                 <h4>Software Engineer</h4>
 			</div>
             <section className={classes.Content}>
-                <TypedText className={classes.AboutText} text={aboutText}/>
+                <TypedText className={classes.AboutText}>{aboutText}</TypedText>
             </section>
             <Footer />
         </div>

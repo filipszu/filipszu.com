@@ -9,7 +9,7 @@ const TypedText = (props) => {
     return (
         <div className={props.className}>
             <p>
-                {props.text}<span class={cursorClasses}>▮</span>
+                <span>{props.children}</span><span class={cursorClasses}>▮</span>
             </p>
         </div>
     );
