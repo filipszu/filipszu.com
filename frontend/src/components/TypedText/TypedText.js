@@ -10,7 +10,6 @@ const TypedText = (props) => {
     const isDoneAnimating = React.useRef();
     const [isAnimating, setIsAnimating] = useState(false);
     const [typedText, setTypedText] = useState('');
-    const [isTyped, setIsTyped] = useState(false);
 
     const type = () => {
         setTypedText(prevTypedText => { 
@@ -25,20 +24,7 @@ const TypedText = (props) => {
 
     const animate = time => {
         if (previousTimeRef.current !== undefined) {
-            const deltaTime = time - previousTimeRef.current;
-            
             setIsAnimating(prevAnimating => {
-
-                console.log(`
-                    ------------------
-                    Animating
-                    ------------------
-                    The Delta: ${deltaTime};
-                    The Time: ${time};
-                    The Delay: ${props.delay};
-                    The Interval: ${props.interval};
-                    ------------------
-                `);
 
                 if(!prevAnimating && time >= props.delay){
                     lastAnimationTickRef.current = time;
@@ -57,12 +43,6 @@ const TypedText = (props) => {
           previousTimeRef.current = time;
           if(!isDoneAnimating.current){
             requestRef.current = requestAnimationFrame(animate);
-          }else{
-              console.log(`
-                ------------------
-                Done Animating
-                ------------------
-              `);
           }
           
     };
@@ -76,7 +56,7 @@ const TypedText = (props) => {
     return (
         <div className={props.className}>
             <p>
-                <span dangerouslySetInnerHTML={{__html: typedText}}></span><span class={cursorClasses}>▮</span>
+                <span dangerouslySetInnerHTML={{__html: typedText}}></span><span className={cursorClasses}>▮</span>
             </p>
         </div>
     );

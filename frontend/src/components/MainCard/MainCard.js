@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import classes from './MainCard.module.css';
 import { useState } from 'react';
 
