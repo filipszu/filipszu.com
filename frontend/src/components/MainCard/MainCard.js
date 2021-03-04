@@ -21,7 +21,7 @@ const MainCard = (props) => {
                 <h4>Software Engineer</h4>
 			</div>
             <section className={classes.Content}>
-                <TypedText className={classes.AboutText}>{aboutText}</TypedText>
+                <TypedText className={classes.AboutText} delay={500} interval={10}>{aboutText}</TypedText>
             </section>
             <Footer />
         </div>
