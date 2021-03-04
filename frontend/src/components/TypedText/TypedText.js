@@ -1,8 +1,6 @@
 import classes from './TypedText.module.css';
 import React, { useEffect, useState } from 'react';
 
-
-
 const TypedText = (props) => {
     const requestRef = React.useRef();
     const previousTimeRef = React.useRef();
@@ -24,8 +22,8 @@ const TypedText = (props) => {
 
     const animate = time => {
         if (previousTimeRef.current !== undefined) {
+            
             setIsAnimating(prevAnimating => {
-
                 if(!prevAnimating && time >= props.delay){
                     lastAnimationTickRef.current = time;
                     type();
@@ -40,11 +38,11 @@ const TypedText = (props) => {
                 return prevAnimating;
             });
           }
+
           previousTimeRef.current = time;
           if(!isDoneAnimating.current){
             requestRef.current = requestAnimationFrame(animate);
           }
-          
     };
 
     useEffect(() => {
