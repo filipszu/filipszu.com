@@ -1,11 +1,11 @@
 import classes from './TypedText.module.css';
-import React, { useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 const TypedText = (props) => {
-    const requestRef = React.useRef();
-    const previousTimeRef = React.useRef();
-    const lastAnimationTickRef = React.useRef();
-    const isDoneAnimating = React.useRef();
+    const requestRef = useRef();
+    const previousTimeRef = useRef();
+    const lastAnimationTickRef = useRef();
+    const isDoneAnimating = useRef();
     const [isAnimating, setIsAnimating] = useState(false);
     const [typedText, setTypedText] = useState('');
 
