@@ -1,56 +1,28 @@
 import classes from './TypedText.module.css';
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
+import useAnimationFrame from '../../hooks/useAnimationFrame';
 
 const TypedText = (props) => {
-    const requestRef = useRef();
-    const previousTimeRef = useRef();
-    const lastAnimationTickRef = useRef();
-    const isDoneAnimating = useRef();
-    const [isAnimating, setIsAnimating] = useState(false);
     const [typedText, setTypedText] = useState('');
 
-    const type = () => {
-        setTypedText(prevTypedText => { 
-            const newLength = prevTypedText.length+1;
-            const newValue = props.children.substr(0, newLength);
-            if(newLength === props.children.length){
-                isDoneAnimating.current = true;
-            }
-            return newValue;
-        });
-    };
-
-    const animate = time => {
-        if (previousTimeRef.current !== undefined) {
-            
-            setIsAnimating(prevAnimating => {
-                if(!prevAnimating && time >= props.delay){
-                    lastAnimationTickRef.current = time;
-                    type();
-                    return true;
+    const type = time => {
+        let interval = parseInt(props.interval);
+        if(time >= props.delay) {
+            setTypedText(prevTypedText => { 
+                const newLength = prevTypedText.length+1;
+                const newValue = props.children.substr(0, newLength);
+                if(newLength === props.children.length){
+                    interval = 0;
                 }
-    
-                if(prevAnimating && time - lastAnimationTickRef.current >= props.interval){
-                    lastAnimationTickRef.current = time;
-                    type();
-                }
-
-                return prevAnimating;
+                return newValue;
             });
-          }
-
-          previousTimeRef.current = time;
-          if(!isDoneAnimating.current){
-            requestRef.current = requestAnimationFrame(animate);
-          }
+        }
+        return interval;
     };
-
-    useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(requestRef.current);
-    }, []);
-    
     const cursorClasses = [classes.Pulse, classes.TextCursor].join(' ');
+
+    useAnimationFrame(type);
+
     return (
         <div className={props.className}>
             <p>
