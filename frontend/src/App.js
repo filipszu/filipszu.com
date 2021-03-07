@@ -6,7 +6,7 @@ function App() {
   return (
     <div className={classes.App}>
       <div className={classes.BackDrop}></div>
-      <WordCloud delay={100} interval={30} wordMultiplier={30}/>
+      <WordCloud delay={100} interval={30} wordMultiplier={20}/>
       <MainCard />
     </div>
   );
