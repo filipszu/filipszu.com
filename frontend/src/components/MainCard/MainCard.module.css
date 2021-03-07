@@ -53,3 +53,23 @@
 	padding-left: 49px;
 	color: #A2EF00;
 }
+
+@media only screen and (max-width : 800px) {
+	.MainCard {
+		min-width: 280px;
+		min-height: 480px;
+		height: 100%;
+		margin-top: 10px;
+		padding: 15px 15px 10px 15px;
+	}
+}
+
+@media only screen and (max-width : 320px) {
+	.MainCard {
+		min-width: 270px;
+		min-height: 480px;
+		height: 100%;
+		margin-top: 10px;
+		padding: 5px 5px 5px 5px;			
+	}
+}
