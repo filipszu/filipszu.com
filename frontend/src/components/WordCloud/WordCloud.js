@@ -72,10 +72,11 @@ const WordCloud = (props) => {
 
     function setCanvas(){
         let c = canvasRef.current;
-        resizeCanvas(c, window.innerWidth, window.innerHeight);
-        canvasSize.width = c.width;
-        canvasSize.height = c.height;
-        
+        if(c){
+            resizeCanvas(c, window.innerWidth, window.innerHeight);
+            canvasSize.width = c.width;
+            canvasSize.height = c.height;
+        }
     }
 
     function resizeCanvas(canvas, width, height){
@@ -167,6 +168,10 @@ const WordCloud = (props) => {
 
     let canvasRef = useRef();
     let wordsOnScreen = [];
+
+    window.addEventListener('resize', () => {
+        setCanvas();
+    });
 
     useAnimationFrame(time => {
         if(time >= props.delay){
