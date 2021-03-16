@@ -1,23 +1,24 @@
 import { useRef } from 'react';
 import classes from './WordCloud.module.css';
-import useAnimationFrame from '../../hooks/useAnimationFrame';
+// import useAnimationFrame from '../../hooks/useAnimationFrame';
+import useAnimationFrameWithWasm from '../../hooks/useAnimationFrameWithWasm';
 import Word from './Word';
 
 const WordCloud = (props) => {
     const stampRef = useRef(document.createElement('canvas'));
     const wordTags = [
         {"name": "Javascript"},
-        {"name": "Typescript"},
-        {"name": "HTML"},
-        {"name": "CSS"},
-        {"name": "SASS"},
-        {"name": "C#"},
-        {"name": "Python"},
-        {"name": "XCP-ng"},
-        {"name": "Bash"},
-        {"name": "Nginx"},
-        {"name": "Linux"},
-        {"name": "Video Streaming"},
+        // {"name": "Typescript"},
+        // {"name": "HTML"},
+        // {"name": "CSS"},
+        // {"name": "SASS"},
+        // {"name": "C#"},
+        // {"name": "Python"},
+        // {"name": "XCP-ng"},
+        // {"name": "Bash"},
+        // {"name": "Nginx"},
+        // {"name": "Linux"},
+        // {"name": "Video Streaming"},
     ];
 
     const wordMultiplier = props.wordMultiplier || 10;
@@ -117,9 +118,30 @@ const WordCloud = (props) => {
         return canvas;
     }
 
-    function animWord(word){
+    function animWord(word, wasm){
+        const envVars = {
+            dampen: dampen,
+            magic1: .5,
+            magic2: .25,
+            magic3: .003,
+            magic4: .0015,
+            canvas_width: canvasSize.width,
+            canvas_height: canvasSize.height
+        };
+        const wordPos = {
+            vx: word.vx,
+            x: word.x,
+            vy: word.vy,
+            y: word.y,
+            vz: word.vz,
+            z: word.depth
+        };
 
-        word.vx = word.vx + (Math.random() * 0.5 - 0.25);
+        const vx = wasm.getWordX(envVars, wordPos); 
+        console.log('[Word vx: ]', vx);
+        word.vx = vx;
+
+        // word.vx = word.vx + (Math.random() * 0.5 - 0.25);
         word.vy = word.vy + (Math.random() * 0.5 - 0.25);
         word.vz = word.vz + (Math.random() * 0.003 - 0.0015);
         
@@ -150,14 +172,14 @@ const WordCloud = (props) => {
         word.depth = word.depth + word.vz;
     }
 
-    function draw() {
+    function draw(time, wasm) {
         const c = canvasRef.current;
 		const ctx = c.getContext("2d");
 
         c.width = c.width; //hack to clean the canvas
 
         wordsOnScreen.forEach(function(word){
-            animWord(word);
+            animWord(word, wasm);
             ctx.globalAlpha = word.getAlpha();
             var wordTxt = getWordCanvas(word);
             ctx.drawImage(wordTxt, word.x, word.y, wordTxt.width * word.getAlpha(), wordTxt.height * word.getAlpha());
@@ -173,15 +195,19 @@ const WordCloud = (props) => {
         setCanvas();
     });
 
-    useAnimationFrame(time => {
+    
+    useAnimationFrameWithWasm((time, wasm) => {
         if(time >= props.delay){
             if(wordsOnScreen.length === 0){
                 setCanvas();
-                wordsOnScreen = createWordsOnScreen(createWords());
+                //wordsOnScreen = createWordsOnScreen(createWords());
+                wordsOnScreen = createWords();
             }
-            return draw(time);
+            return draw(time, wasm);
         }
     });
+    
+    
 
     return (
         <canvas ref={canvasRef} className={classes.WordCloud} style={{ width: '100px', height: '100px' }}></canvas>
