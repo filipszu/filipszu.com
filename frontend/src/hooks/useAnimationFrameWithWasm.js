@@ -1,12 +1,11 @@
-import { useEffect, useRef } from 'react';
-import Module from '../szu';
+import { useEffect, useRef, lazy } from 'react';
 
-const useAnimationFrameWithWasm = callback => {
+const useAnimationFrameWithWasm = (wasmModuleName, callback) => {
     const requestRef = useRef();
     const nextTickTimeRef = useRef();
     const modulePromise = useRef();
     
-    modulePromise.current = Module();
+    modulePromise.current = import("../wasm-bind/"+wasmModuleName);
 
     const animate = (time, wasm) => {
         if(!nextTickTimeRef.current || time >= nextTickTimeRef.current){
@@ -21,9 +20,11 @@ const useAnimationFrameWithWasm = callback => {
     }
 
     useEffect(() => {
-        modulePromise.current.then(wasm => {
-            requestRef.current = requestAnimationFrame(time => {
-                animate(time, wasm);
+        modulePromise.current.then(wasmModule => {
+            wasmModule.default().then((wasm) => {
+                requestRef.current = requestAnimationFrame(time => {
+                    animate(time, wasm);
+                });
             });
         });
         return () => cancelAnimationFrame(requestRef.current);

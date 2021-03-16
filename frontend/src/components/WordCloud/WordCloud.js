@@ -5,6 +5,7 @@ import useAnimationFrameWithWasm from '../../hooks/useAnimationFrameWithWasm';
 import Word from './Word';
 
 const WordCloud = (props) => {
+    const wasmModuleName = 'szu';
     const stampRef = useRef(document.createElement('canvas'));
     const wordTags = [
         {"name": "Javascript"},
@@ -196,7 +197,7 @@ const WordCloud = (props) => {
     });
 
     
-    useAnimationFrameWithWasm((time, wasm) => {
+    useAnimationFrameWithWasm(wasmModuleName, (time, wasm) => {
         if(time >= props.delay){
             if(wordsOnScreen.length === 0){
                 setCanvas();
