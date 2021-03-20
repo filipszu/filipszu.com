@@ -5,7 +5,8 @@ const footer = (props) => {
         <footer className={classes.Footer}>
             |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://twitter.com/filipszu">@filipszu</a>&nbsp;
             |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://github.com/filipszu">GitHub</a>&nbsp;
-            |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="http://www.linkedin.com/in/filipszu">LinkedIn</a>&nbsp;|
+            |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://stackoverflow.com/users/9680496/filip-szulczewski">StackOverflow</a>&nbsp;
+            |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://www.linkedin.com/in/filipszu">LinkedIn</a>&nbsp;|
         </footer>
     );
 };
