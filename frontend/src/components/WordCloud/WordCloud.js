@@ -182,7 +182,6 @@ const WordCloud = (props) => {
                 wordsOnScreen = createWordsOnScreen(createWords());
             }
             if (isMobile){
-                draw(time);
                 return 0;
             }else{
                 return draw(time);
