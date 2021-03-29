@@ -142,6 +142,22 @@ code {
     width: 20%;
 }
 
+@media only screen and (max-width : 1024px) {
+    .section-wrapper{
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+    }	
+
+    .sidebar-section{
+        width: 100%;
+    }
+    
+    .content-section{
+        width: 100%;
+    }
+}
+
 /* END LAYOUT */
 
 /* SIDEBAR */
@@ -167,10 +183,7 @@ code {
 .post{
     background-color: rgba(0, 0, 0, .85);
     padding: 1em;
-}
-
-.post.post-snippet{
-    margin: 10px 0;
+    margin-bottom: .5em;
 }
 
 .post.post-content{
