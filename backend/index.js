@@ -7,10 +7,10 @@ var express = require('express'),
         posts: './_posts',
         metaFormat: 'json',
         routes: {
-        'blog/posts/:post': 'post',
-        'blog/pagination/:page': 'page',
-        'blog/tags/:tag': 'tag',
-        'blog/categories/:category': 'category'
+        'posts/:post': 'post',
+        'pagination/:page': 'page',
+        'tags/:tag': 'tag',
+        'categories/:category': 'category'
         }
     });
 
