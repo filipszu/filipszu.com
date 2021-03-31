@@ -3,5 +3,5 @@ function(){
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'UA-31194619-1');
+    gtag('config', 'G-TZWNB1NLRN');
 }();
