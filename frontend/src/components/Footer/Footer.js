@@ -1,5 +1,5 @@
 import classes from "./Footer.module.css";
-import { BrowserView, isMobile, isTablet, MobileOnlyView } from 'react-device-detect';
+import { isMobile, isTablet } from 'react-device-detect';
 
 const footer = (props) => {
     let links = (
