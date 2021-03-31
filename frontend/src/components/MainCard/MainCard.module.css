@@ -54,7 +54,7 @@
 	color: #A2EF00;
 }
 
-@media only screen and (max-width : 1024px) {
+@media only screen and (max-width : 1366px) {
 	.MainCard {
 		width: 70%;
 		min-width: 280px;
@@ -73,7 +73,7 @@
 	}
 }
 
-@media only screen and (max-width : 360px){
+@media only screen and (max-width : 320px){
 	.MainCard {
 		width: 70%;
 		min-width: 270px;
