@@ -3,8 +3,6 @@ import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
 
-import { isMobile } from 'react-device-detect';
-
 const WordCloud = (props) => {
     const stampRef = useRef(document.createElement('canvas'));
     const wordTags = [
@@ -181,12 +179,7 @@ const WordCloud = (props) => {
                 setCanvas();
                 wordsOnScreen = createWordsOnScreen(createWords());
             }
-            if (isMobile){
-                return 0;
-            }else{
-                return draw(time);
-            }
-            
+            return draw(time);
         }
     });
 
