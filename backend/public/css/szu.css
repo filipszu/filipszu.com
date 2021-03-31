@@ -121,6 +121,12 @@ code {
     color: #CB0077;
 }
 
+@media only screen and (max-width : 1024px) {
+    .logo{
+        display: none;
+    }
+}
+
 /* END HEADER */
 
 /* LAYOUT */
