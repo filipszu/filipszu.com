@@ -125,6 +125,10 @@ code {
     .logo{
         display: none;
     }
+
+    .site-title{
+        position: static;
+    }
 }
 
 /* END HEADER */
