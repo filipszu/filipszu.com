@@ -2,7 +2,7 @@ import classes from './App.module.css';
 import MainCard from './components/MainCard/MainCard';
 import WordCloud from './components/WordCloud/WordCloud';
 
-import {BrowserView} from 'react-device-detect';
+import {BrowserView, TabletView} from 'react-device-detect';
 
 function App() {
   return (
@@ -10,6 +10,9 @@ function App() {
       <BrowserView>
         <WordCloud delay={500} interval={30} wordMultiplier={15}/>
       </BrowserView>
+      <TabletView>
+        <WordCloud delay={500} interval={30} wordMultiplier={15}/>
+      </TabletView>
       <MainCard />
     </div>
   );
