@@ -1,0 +1,255 @@
+@font-face {
+    font-family: 'MyPhoneN1280Regular';
+    src: url('../assets/my_phone_n1280-webfont.eot');
+    src: url('../assets/my_phone_n1280-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../assets/my_phone_n1280-webfont.woff') format('woff'),
+         url('../assets/my_phone_n1280-webfont.ttf') format('truetype'),
+         url('../assets/my_phone_n1280-webfont.svg#MyPhoneN1280Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #464646; 
+    font-family: "MyPhoneN1280Regular" !important;
+    margin: 0 !important;
+    color: #ccc !important;
+    font-size: 1.2em;
+    line-height: 1em;
+}
+
+a {
+    color: #A2EF00 !important;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+p {
+    font-family: "MyPhoneN1280Regular" !important;
+    font-size: inherit;
+}
+
+h1, h2, h3, h4, h5 {
+    color: white;
+}
+
+/* CODE */
+
+pre{
+    background-color: white;
+    color: black;
+    /* border: 3px dashed #464646; */
+}
+
+pre code{
+    color: black;
+    font-size: 1.2em;
+}
+
+code {
+    color: black;
+    background-color: white;
+    border: none;
+}
+
+/* END CODE */
+
+/* HEADER */
+
+.navbar{
+    position: inherit;
+    margin: 0 !important;
+}
+
+.navbar-inner{
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+}
+
+.navbar-inner .container {
+    border-bottom: 3px dashed #CB0077;
+    background-color: rgba(0, 0, 0, .85);
+}
+
+.container {
+    padding: 10px;
+    
+    background-color: #464646; 
+    width: auto;
+}
+
+.logo a {
+    display: block;
+}
+
+.logo a:hover{
+    text-decoration: none;
+}
+
+.logo {
+    position: relative;
+    top: 5px;
+    width: 220px;
+}
+
+.logo h1, .logo h4{
+    color: white;
+	margin: 0px;
+	padding:0px;
+}
+
+.logo h1{
+    font-size: 42px;
+}
+
+.logo h4{
+	margin-top: -4px;
+	padding-left: 35px;
+	color: #A2EF00;
+    font-size: 24px;
+}
+
+.site-title{
+    text-align: center;
+    position: relative;
+    top: -24px;
+    font-size: 32px;
+    color: #CB0077;
+}
+
+@media only screen and (max-width : 1024px) {
+    .logo{
+        display: none;
+    }
+
+    .site-title{
+        position: static;
+    }
+}
+
+/* END HEADER */
+
+/* LAYOUT */
+
+.section-wrapper{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.content-section{
+    width: 78%;
+}
+
+.content-wrapper{
+}
+
+.sidebar-section{
+    width: 20%;
+}
+
+@media only screen and (max-width : 1024px) {
+    .section-wrapper{
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+    }	
+
+    .sidebar-section{
+        width: 100%;
+    }
+    
+    .content-section{
+        width: 100%;
+    }
+}
+
+/* END LAYOUT */
+
+/* SIDEBAR */
+
+.well {
+    border: 2px dashed #CB0077;
+    color: #999;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, .85);
+}
+
+.well .nav-list > li > a, .nav-list .nav-header {
+    font-size: 18px;
+}
+
+.nav > li > a:hover{
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+/* END SIDEBAR */
+
+.post{
+    background-color: rgba(0, 0, 0, .85);
+    padding: 1em;
+    margin-bottom: .5em;
+}
+
+.post.post-content{
+    padding: 0;
+}
+
+.post .date {
+    font-size: 18px;
+    color: white;
+}
+
+.post .date-label {
+    font-size: 18px;
+    color: #999;
+    margin-right: .5em;
+}
+
+.post-header{
+    border-bottom: 3px dashed #999;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+/* TAGS */
+.tags{
+    padding-top: 1em;
+    margin-top: 1em;
+    border-top: 3px dashed #999;
+}
+
+.tags .tags-label{
+    color: #999;
+    margin-right: .5em;
+}
+
+.tags a{
+    color: white !important;
+}
+
+.tags a:hover{
+    color: white !important;
+}
+
+.label-info{
+    padding: .3em;
+    background-color: #CB0077;
+    color: white;
+}
+
+.label-info:hover{
+    background-color: #CB0077;
+    color: white;
+}
+
+.label{
+    font-size: 1em;
+}
+
+/* END TAGS */

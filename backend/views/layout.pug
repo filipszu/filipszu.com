@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    title= 'Rambles from the cut - FilipSZU Blog'
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width,initial-scale=1')
+    script(src='https://www.googletagmanager.com/gtag/js?id=G-TZWNB1NLRN')
+    script(src='/js/analytics.js')
+    link(rel='icon' href='/assets/favicon.png')
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/szu.css')
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          .logo
+            a(href='https://filipszu.com')
+              div.logo-hit
+                h1 FiliPSZU
+                h4 Software Engineer
+          .site-title: a(href='/') Rambles from the cut
+    .wrap
+      .container.main-content
+        .section-wrapper
+          .content-section
+            .content-wrapper
+              block content
+          .sidebar-section
+            .well.sidebar-nav
+              ul.nav.nav-list
+                li.nav-header CATEGORIES:
+                each cat in getCategories()
+                  li
+                    a(href=categoryURL(cat)) #{cat}
+                li.nav-header TAGS:
+                each tag in getTags()
+                  li
+                    a(href=tagURL(tag)) #{tag}
