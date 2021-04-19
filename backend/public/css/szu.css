@@ -231,6 +231,7 @@ code {
 
 .tags a{
     color: white !important;
+    margin-right: 10px;
 }
 
 .tags a:hover{
