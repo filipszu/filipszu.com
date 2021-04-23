@@ -1,0 +1,81 @@
+.MainCard {
+    margin: 10% auto;
+	min-width: 400px;
+	min-height: 350px;
+	width: 40%;
+	height: 25%;
+	border: 5px dashed #CB0077;
+	z-index: 10;
+	position: relative;
+	background-color: rgba(0,0,0,0.85);
+	top: 30%;
+	padding: 10px 15px 0px 15px;
+}
+
+.TextWhite{
+	color: #FFFFFF;
+}
+.TextGreen{
+	color: #A2EF00;
+}
+.TextRed{
+	color: #AA0000;
+}
+.TextPurple{
+	color: #CB0077;
+}
+
+.Content {
+	margin-bottom: 80px;
+	margin-top: 40px;
+}
+
+.AboutText {
+	color: #999999;
+	text-align: left;
+	font-size: 24px;
+	display: inline;
+}
+
+.Logo {
+    font-size: 30px;
+	margin: 0px auto;  
+}
+
+.Logo h1, 
+.Logo h4{
+	margin: 0px;
+	padding:0px;
+}
+
+.Logo h4{
+	margin-top: -10px;
+	padding-left: 49px;
+	color: #A2EF00;
+}
+
+@media only screen and (max-width : 1366px) {
+	.MainCard {
+		width: 70%;
+		min-width: 280px;
+		min-height: 480px;
+		height: 100%;
+	}
+
+	.Logo h4{
+		font-size: 24px;  
+	}
+}
+
+@media only screen and (max-width : 360px){
+	.MainCard {
+		width: 85%;
+	}
+}
+
+@media only screen and (max-width : 320px){
+	.MainCard {
+		width: 70%;
+		min-width: 270px;
+	}
+}
