@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
 
 const WordCloud = (props) => {
-    const stampRef = useRef(document.createElement('canvas'));
+    const stampRef = useRef(null);
     const wordTags = [
         {"name": "Javascript"},
         {"name": "Typescript"},
@@ -19,18 +19,18 @@ const WordCloud = (props) => {
         {"name": "Linux"},
         {"name": "Video Streaming"},
     ];
-
+    const canvasRef = useRef(null);
     const wordMultiplier = props.wordMultiplier || 10;
     const dampen = props.dampen || 0.95;
-
+    const canvasSize = {width: 0, height: 0};
     let colors = [
         {color: "#FFFFFF", weight: .3}, 
         {color: "#000000", weight: .3}, 
         {color: "#CB0077", weight: .3}, 
         {color: "#A2EF00", weight: .1}
     ];
-
-    const canvasSize = {width: 0, height: 0};
+    let wordsOnScreen = [];
+    
 
 
     function createWords(data){
@@ -166,13 +166,13 @@ const WordCloud = (props) => {
         return props.interval;
     }
 
-    let canvasRef = useRef();
-    let wordsOnScreen = [];
-
-    window.addEventListener('resize', () => {
-        setCanvas();
-    });
-
+    useEffect(() => {
+        stampRef.current = document.createElement('canvas');
+        window.addEventListener('resize', () => {
+            setCanvas();
+        });
+    }, []);
+    
     useAnimationFrame(time => {
         if(time >= props.delay){
             if(wordsOnScreen.length === 0){

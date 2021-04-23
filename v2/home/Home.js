@@ -2,7 +2,7 @@ import classes from './Home.module.css';
 import MainCard from './components/MainCard/MainCard';
 import WordCloud from './components/WordCloud/WordCloud';
 
-import {isBrowser, isMobile, isTablet} from 'react-device-detect';
+import {isMobile, isTablet} from 'react-device-detect';
 
 function Home() {
   let wordCloud = <WordCloud delay={500} interval={30} wordMultiplier={15}/>;
@@ -13,7 +13,7 @@ function Home() {
   }
   return (
     <div className={classes.Home}>
-      {/* {wordCloud} */}
+      {wordCloud}
       <MainCard />
     </div>
   );
