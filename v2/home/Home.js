@@ -1,4 +1,4 @@
-import classes from './App.module.css';
+import classes from './Home.module.css';
 import MainCard from './components/MainCard/MainCard';
 import WordCloud from './components/WordCloud/WordCloud';
 
@@ -12,7 +12,7 @@ function Home() {
     wordCloud = null;
   }
   return (
-    <div className={classes.App}>
+    <div className={classes.Home}>
       {/* {wordCloud} */}
       <MainCard />
     </div>
