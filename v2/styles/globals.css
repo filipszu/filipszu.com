@@ -25,3 +25,16 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.TextWhite{
+	color: #FFFFFF;
+}
+.TextGreen{
+	color: #A2EF00;
+}
+.TextRed{
+	color: #AA0000;
+}
+.TextPurple{
+	color: #CB0077;
+}
