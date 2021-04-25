@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Home from '../components/home/Home';
 import {promises as fs} from 'fs';
+import * as utils from "../utils";
 
 interface HomePageProps{
   aboutText: string;
@@ -17,7 +18,7 @@ export async function getStaticProps<HomePageProps>(){
 };
 
 export default function HomePage(props: HomePageProps) {
-  let description = props.aboutText.replace(/(<([^>]+)>)/gi, "");
+  let description = utils.stripHTMLFromString(props.aboutText);
 
   return (
     <div>
