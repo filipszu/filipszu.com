@@ -156,7 +156,8 @@ const WordCloud = (props: WordCloudProps) => {
     }
 
     function draw(wordsToDraw: Word[]) {
-        const c = canvasRef.current;
+        const c = canvasRef.current,
+            interval = props.interval || 0;
         if(c){
             const ctx = c.getContext("2d");
             if(ctx){
@@ -171,7 +172,7 @@ const WordCloud = (props: WordCloudProps) => {
                 });
             }
         }
-        return props.interval;
+        return interval;
     }
 
     useEffect(() => {
@@ -181,9 +182,11 @@ const WordCloud = (props: WordCloudProps) => {
         });
     }, []);
     
-    let wordsOnScreen: Word[] = [];
+    let wordsOnScreen: Word[] = [],
+        delay = props.delay || 0;
+
     useAnimationFrame(time => {
-        if(time >= props.delay){
+        if(time >= delay){
             if(wordsOnScreen.length === 0){
                 setCanvas();
                 wordsOnScreen = createWordsOnScreen(createWords());
