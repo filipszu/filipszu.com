@@ -3,8 +3,15 @@ import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
 
-const WordCloud = (props) => {
-    const stampRef = useRef(null);
+export interface WordCloudProps {
+    wordMultiplier?: number,
+    dampen?: number,
+    delay?: number,
+    interval?: number
+};
+
+const WordCloud = (props: WordCloudProps) => {
+    const stampRef = useRef<HTMLCanvasElement | null>(null);
     const wordTags = [
         {"name": "Javascript"},
         {"name": "Typescript"},
@@ -19,7 +26,7 @@ const WordCloud = (props) => {
         {"name": "Linux"},
         {"name": "Video Streaming"},
     ];
-    const canvasRef = useRef(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const wordMultiplier = props.wordMultiplier || 10;
     const dampen = props.dampen || 0.95;
     const canvasSize = {width: 0, height: 0};
@@ -29,12 +36,9 @@ const WordCloud = (props) => {
         {color: "#CB0077", weight: .3}, 
         {color: "#A2EF00", weight: .1}
     ];
-    let wordsOnScreen = [];
     
-
-
-    function createWords(data){
-		var wordsArray = [];
+    function createWords(){
+		var wordsArray: Word[] = [];
 		var count = 0;
 		wordTags.forEach(function(dataObj){
             let name = dataObj.name;
@@ -45,22 +49,23 @@ const WordCloud = (props) => {
 		return wordsArray;
     }
 
-    function createWordsOnScreen(wordObjs){
+    function createWordsOnScreen(wordObjs: Word[]){
+        let wordsOnScreen = [];
         for(var i = 0; i < wordObjs.length * wordMultiplier; i++){
             var j = i % wordObjs.length;
             var origin = wordObjs[j];
-            var clone = {
+            var clone: Word = {
                 ...origin
             }
 
             colors = colors.sort(colorObj => colorObj.weight);
-            clone.currentColor = colors[0];
+            clone.currentColor = colors[0].color;
             if(Math.random() > .9){
-                clone.currentColor = colors[3];
+                clone.currentColor = colors[3].color;
             }else if(Math.random() > .6){
-                clone.currentColor = colors[2];
+                clone.currentColor = colors[2].color;
             }else if(Math.random() > .3){
-                clone.currentColor = colors[1];
+                clone.currentColor = colors[1].color;
             }
             //Initial word placement on screen
             clone.x = Math.random()*canvasSize.width;
@@ -79,7 +84,7 @@ const WordCloud = (props) => {
         }
     }
 
-    function resizeCanvas(canvas, width, height){
+    function resizeCanvas(canvas: HTMLCanvasElement, width: number, height: number){
         if(canvas && canvas instanceof HTMLCanvasElement && width && height){
             canvas.width = width;
             canvas.height = height;
@@ -90,34 +95,34 @@ const WordCloud = (props) => {
         }
     }
 
-    function getWordCanvas(word){
-        word = word || {};
-
+    function getWordCanvas(word: Word){
         let canvas = stampRef.current;
-        let ctx = canvas.getContext('2d');
-        let calculatedWidth = 0;
-        let textBaseline = "top";
-        let fontSize = 44;
-        let font = `${fontSize}px MyPhoneN1280Regular`;
-        let fillStyle = word.currentColor.color || "#CB0077";
-        let txt = word.txt || "Test Word even longer";
-
-        ctx.textBaseline = textBaseline;
-        ctx.font = font;
-        ctx.fillStyle = fillStyle;
-        calculatedWidth = ctx.measureText(txt).width;
-        resizeCanvas(canvas, calculatedWidth, fontSize);
-        ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
-        ctx.font = font;
-        ctx.fillStyle = fillStyle;
-        ctx.fillText(txt, 0, 0);
-        word.width = calculatedWidth;
-        word.height = fontSize;
-    
+        if(canvas && word){
+            let ctx = canvas.getContext('2d');
+            let calculatedWidth = 0;
+            let textBaseline: CanvasTextBaseline = "top";
+            let fontSize = 44;
+            let font = `${fontSize}px MyPhoneN1280Regular`;
+            let fillStyle = word.currentColor || "#CB0077";
+            let txt = word.txt || "Test Word even longer";
+            if(ctx){
+                ctx.textBaseline = textBaseline;
+                ctx.font = font;
+                ctx.fillStyle = fillStyle;
+                calculatedWidth = ctx.measureText(txt).width;
+                resizeCanvas(canvas, calculatedWidth, fontSize);
+                ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
+                ctx.font = font;
+                ctx.fillStyle = fillStyle;
+                ctx.fillText(txt, 0, 0);
+                word.width = calculatedWidth;
+                word.height = fontSize;
+            }
+        }
         return canvas;
     }
 
-    function animWord(word){
+    function animWord(word: Word){
 
         word.vx = word.vx + (Math.random() * 0.5 - 0.25);
         word.vy = word.vy + (Math.random() * 0.5 - 0.25);
@@ -150,19 +155,22 @@ const WordCloud = (props) => {
         word.depth = word.depth + word.vz;
     }
 
-    function draw() {
+    function draw(wordsToDraw: Word[]) {
         const c = canvasRef.current;
-		const ctx = c.getContext("2d");
+        if(c){
+            const ctx = c.getContext("2d");
+            if(ctx){
+                c.width = c.width; //hack to clean the canvas
 
-        c.width = c.width; //hack to clean the canvas
-
-        wordsOnScreen.forEach(function(word){
-            animWord(word);
-            ctx.globalAlpha = word.getAlpha();
-            var wordTxt = getWordCanvas(word);
-            ctx.drawImage(wordTxt, word.x, word.y, wordTxt.width * word.getAlpha(), wordTxt.height * word.getAlpha());
-        });
-
+                wordsToDraw.forEach(function(word){
+                    animWord(word);
+                    ctx.globalAlpha = word.getAlpha();
+                    var wordTxt = getWordCanvas(word);
+                    if(wordTxt)
+                        ctx.drawImage(wordTxt, word.x, word.y, wordTxt.width * word.getAlpha(), wordTxt.height * word.getAlpha());
+                });
+            }
+        }
         return props.interval;
     }
 
@@ -173,14 +181,16 @@ const WordCloud = (props) => {
         });
     }, []);
     
+    let wordsOnScreen: Word[] = [];
     useAnimationFrame(time => {
         if(time >= props.delay){
             if(wordsOnScreen.length === 0){
                 setCanvas();
                 wordsOnScreen = createWordsOnScreen(createWords());
             }
-            return draw(time);
+            return draw(wordsOnScreen);
         }
+        return 0;
     });
 
     return (

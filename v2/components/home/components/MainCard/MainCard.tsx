@@ -4,7 +4,9 @@ import { useState } from 'react';
 import Footer from '../Footer/Footer';
 import TypedText from '../TypedText/TypedText';
 
-const MainCard = (props) => {
+export interface MainCardProps {};
+
+const MainCard = (props: MainCardProps) => {
     const [aboutText, setAboutText] = useState(`Hi,<br />
         my name is <span class="${classes.TextWhite}">Filip Szulczewski</span>.<br />
         I’m an <span class="${classes.TextGreen}">autodidact programmer</span>, with <span class="${classes.TextWhite}">more than a decade of experience</span>.<br /><br />  
@@ -20,7 +22,7 @@ const MainCard = (props) => {
                 <h4>Software Engineer</h4>
 			</div>
             <section className={classes.Content}>
-                <TypedText className={classes.AboutText} delay={500} interval={10}>{aboutText}</TypedText>
+                <TypedText className={classes.AboutText} delay={500} interval={10} text={aboutText}/>
             </section>
             <Footer />
         </div>

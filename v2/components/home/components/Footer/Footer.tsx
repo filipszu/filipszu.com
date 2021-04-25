@@ -1,7 +1,7 @@
 import classes from "./Footer.module.css";
 import { isMobile, isTablet } from 'react-device-detect';
 
-const footer = (props) => {
+const footer = () => {
     let links = (
         <div>
             |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://twitter.com/filipszu">@filipszu</a>&nbsp;

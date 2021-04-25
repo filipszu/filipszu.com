@@ -1,15 +1,14 @@
 import classes from './Home.module.css';
 import MainCard from './components/MainCard/MainCard';
 import WordCloud from './components/WordCloud/WordCloud';
-
-import {isMobile, isTablet} from 'react-device-detect';
+import {isDesktop, isTablet} from 'react-device-detect';
 
 function Home() {
-  let wordCloud = <WordCloud delay={500} interval={30} wordMultiplier={15}/>;
+  let wordCloud = null;
   if(isTablet){
     wordCloud = <WordCloud delay={500} interval={30} wordMultiplier={5}/>;
-  } else if(isMobile){
-    wordCloud = null;
+  } else if(isDesktop){
+    wordCloud = <WordCloud delay={500} interval={30} wordMultiplier={15}/>;
   }
   return (
     <div className={classes.Home}>
