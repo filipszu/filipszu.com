@@ -20,3 +20,15 @@ export async function getFilePaths(dir: string) {
         return acc.concat(item);
     }, []) as string[];
 }
+
+/**
+ * An async function that given a dircetory path will attempt to recursively traverse the folder and return an Array of file names without extensions.
+ * @param dir Directory to be read
+ * @returns An Array of filenames without extensions including sublfolders.
+ */
+export async function getFileNames(dir: string, includeExtensions = false) {
+    const filePaths = await getFilePaths(dir);
+    return filePaths.map(filePath => {
+        return includeExtensions ? path.basename(filePath) : path.basename(filePath).replace(/\.[^/.]+$/, "");
+    });
+};
