@@ -15,7 +15,6 @@ export async function getStaticProps(){
 }
 
 export default function BlogPage(props: BlogPageProps){
-    debugger;
     return (
         <Fragment>
             <h1>Blog Page</h1>
