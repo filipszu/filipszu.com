@@ -7,7 +7,7 @@ interface HomePageProps{
   aboutText: string;
 }
 
-export async function getStaticProps<HomePageProps>(){
+export async function getStaticProps(){
   const aboutFile = './_content/about_text/about.html';
   const aboutBuffer = await fs.readFile(aboutFile);
   return {
