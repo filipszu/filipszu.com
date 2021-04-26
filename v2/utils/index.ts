@@ -14,17 +14,3 @@ export function stripHTMLFromString(inputString: string){
         throw `stripHTMLFromString() expects a string as an argument. Recieved an object of type: ${typeof inputString}`;
     }
 };
-
-/**
- * Function that given a Next JS router query from a dynamic catch all route and an Array of slugs will return the matching slugs.
- * @param query An `Array` of `strings` representing the query.
- * @param posts An `Array` of `strings` representing the posts.
- * @returns 
- */
-export function getMatchingSlugs(query:string[], posts:string[]) {
-    let result = [] as string[];
-    if(_.isArray(query) && query.length > 0 && posts.indexOf(query[0]) !== -1){
-        result.push(posts[posts.indexOf(query[0])]);
-    }
-    return result;
-}
