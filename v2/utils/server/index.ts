@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import _ from "lodash"
 import jsonFm from "json-front-matter";
-import { parse } from "node:path";
 
 /**
  * An async function that given a dircetory path will attempt to recursively traverse the folder and return an Array of file paths.
@@ -11,28 +10,36 @@ import { parse } from "node:path";
  */
 export async function getFilePaths(dir: string, query?:string[]) {
     const fileNames = await fs.promises.readdir(dir);
-    const getFilePathRecursive: (s:string) => Promise<string[]> = async (fileName: string) => {
+    const getFilePathsRecursive: (s:string) => Promise<string[]> = async (fileName: string) => {
         const filePath = path.join(dir, fileName);
         const stats = await fs.promises.stat(filePath);
         return stats.isDirectory() ? await getFilePaths(filePath) : [filePath];
     };
-    fileNames.map(getFilePathRecursive);
-    const allFilenames = fileNames.map(getFilePathRecursive);
-    const nestedFileNames = await Promise.all(allFilenames);
+    const nestedFileNames = await Promise.all(fileNames.map(getFilePathsRecursive));
     let result = nestedFileNames.reduce((acc, item) => {
         return acc.concat(item);
     }, []) as string[];
 
     if(_.isArray(query)){
-        if(query.length === 1){
-            result = result.filter(fileName => {
-                return fileName.search(query[0]) !== -1;
-            });
-        }else{
-            result = [];    
-        }
-    }
+        result = getStringsMatchingQuery(query, result);
+    }    
 
+    return result;
+}
+
+/**
+ * A function that given an Array of strings and another Array of strings will find the matching ones.
+ * @param query An Array of strings of needles
+ * @param haystack The haystack to search
+ * @returns An Array of string that match the query
+ */
+export function getStringsMatchingQuery(query: string[], haystack: string[]){
+    let result = [] as string[];
+    if(query.length === 1){
+        result = haystack.filter(str => {
+            return str.search(query[0]) !== -1;
+        });
+    }
     return result;
 }
 
@@ -46,13 +53,7 @@ export async function getFileNames(dir: string, includeExtensions = false, query
     let fileNames = filePaths;
 
     if(_.isArray(query)){
-        if(query.length === 1){
-            fileNames = filePaths.filter(fileName => {
-                return fileName.search(query[0]) !== -1;
-            });
-        }else{
-            fileNames = [];    
-        }
+        fileNames = getStringsMatchingQuery(query, fileNames);
     } 
 
     fileNames = fileNames.map(filePath => {

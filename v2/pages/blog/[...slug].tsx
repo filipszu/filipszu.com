@@ -23,7 +23,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<PostsPageProps> = async (context) => {
     const params = context.params as types.IParams;
-    const fileNames = await serverUtils.getFileNames("./_content/_posts", true);
+    const fileNames = await serverUtils.getFilePaths("./_content/_posts");
     const matchingFileNames = await serverUtils.getFileNames("./_content/_posts", true, params.slug);
     const matchingFilePaths = await serverUtils.getFilePaths("./_content/_posts", params.slug);
     const matchingPosts = await serverUtils.getPosts(matchingFilePaths);
