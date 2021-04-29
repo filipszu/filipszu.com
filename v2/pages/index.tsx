@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Home from '../components/home/Home';
+import Home from '../lib/components/home/Home';
 import {promises as fs} from 'fs';
 import * as utils from "../lib/utils";
 
