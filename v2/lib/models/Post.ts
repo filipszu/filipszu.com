@@ -1,5 +1,6 @@
 import * as utils from "../utils";
 import {isString, isDate, isArray} from "lodash";
+import marked from "marked";
 
 export default class Post {
     title: string = "";
@@ -27,7 +28,7 @@ export default class Post {
             }
         }
         if(defaultValues.body && isString(defaultValues.body)){
-            this.body = defaultValues.body;
+            this.body = marked(defaultValues.body);
         }
     }
 }

@@ -70,7 +70,7 @@ export default function PostsPage(props: PostsPageProps){
                 <span>{tag}&nbsp;</span>
             ))}</h4>
             <h4>Publish date: {utils.dateToDateString(posts[0].date)}</h4>
-            {posts[0].body}
+            <div dangerouslySetInnerHTML={{__html: posts[0].body}}/>
         </div>
     ) : <p className="TextRed">No Posts Matched</p>;
 
