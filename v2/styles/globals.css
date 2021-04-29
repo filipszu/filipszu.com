@@ -19,11 +19,6 @@ body {
   font-size: 1.2em;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -40,3 +35,9 @@ a {
 .TextPurple{
 	color: #CB0077;
 }
+
+a {
+  color: #A2EF00 !important;
+  text-decoration: none;
+}
+

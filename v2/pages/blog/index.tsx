@@ -3,6 +3,7 @@ import * as serverUtils from '../../lib/utils/server';
 import Post from "../../lib/models/Post";
 import * as utils from "../../lib/utils";
 import Link from "next/link";
+import Header from '../../lib/components/blog/Header/Header';
 
 export interface BlogPageProps{
     files: string[],
@@ -29,7 +30,7 @@ export default function BlogPage(props: BlogPageProps){
     }
     return (
         <Fragment>
-            <h1>Blog Page</h1>
+            <Header />
             <ul>
                 {posts ? posts.map(post => {
                     const linkHref = ("/blog/" + post.slug);
