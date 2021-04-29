@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import _ from "lodash"
 import jsonFm from "json-front-matter";
+import * as utils from "../index";
+
 
 /**
  * An async function that given a dircetory path will attempt to recursively traverse the folder and return an Array of file paths.
@@ -63,23 +65,45 @@ export async function getFileNames(dir: string, includeExtensions = false, query
     return fileNames;
 };
 
-export interface IParsedFile{
-    body: string,
-    attributes: {
-        title?: string,
-        tags?: string[],
-        category: string,
-        date: string,
-    },
-}
-
-export async function getPosts(fileNames: string[]) {
-    let result = [];
-    if(fileNames.length){
-        const file = await fs.promises.readFile(fileNames[0]);
-        const parsedFile = jsonFm.parse(file.toString()) as IParsedFile;
-        const title = parsedFile.attributes.title ? parsedFile.attributes.title : fileNames[0];
-        result.push(parsedFile);
+/**
+ * An async function that given an Array of filePaths will return an Array of Objects implementing the IParsedFile interface.
+ * @param filePaths An Array of strings which should be the filePaths of files to be read and parsed. 
+ * @returns An Array of Objects implementing the IParsedFile interface.
+ */
+export async function getParsedFiles(filePaths: string[]) {
+    let result = [] as IParsedFile[];
+    if(filePaths.length){
+        result = await Promise.all(filePaths.map(async filePath => {
+            const parsedFile = await getParsedFile(filePath);
+            return parsedFile;
+        }));       
     }
     return result;
+}
+
+/**
+ * An Async function that given a Path to a file will read and parse the file and return an Object implementing IParsedFile.
+ * @param filePath Path to the file that is ment to be read and parsed.
+ * @returns Object implementing IParsedFile.
+ */
+export async function getParsedFile(filePath: string){
+    const file = await fs.promises.readFile(filePath);
+    const parsedFile = jsonFm.parse(file.toString()) as IParsedFile;
+    if("body" in parsedFile === false){
+        parsedFile.body = "";
+    }
+    if(parsedFile.attributes){
+        if("title" in parsedFile.attributes === false){
+            parsedFile.attributes.title = filePath;
+        }
+        if("date" in parsedFile.attributes === false){
+            parsedFile.attributes.date = utils.dateToDateString();
+        }
+    }else{
+        parsedFile.attributes = {
+            title: filePath,
+            date: utils.dateToDateString()
+        };
+    }
+    return parsedFile;
 }

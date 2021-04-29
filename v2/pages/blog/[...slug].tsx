@@ -2,14 +2,15 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import _ from "lodash";
 import { GetStaticProps, GetStaticPaths } from "next";
-import * as serverUtils from "../../utils/server";
-import * as utils from "../../utils";
-import * as types from "../../utils/types";
+import * as serverUtils from "../../lib/utils/server";
+import * as utils from "../../lib/utils";
+import Post from "../../lib/models/Post";
+import IParams from "../../lib/types/IParams";
 
 export interface PostsPageProps{
-    allPosts?: string[],
+    allFileNames?: string[],
     matchingFileNames?: string[],
-    matchingPosts?: serverUtils.IParsedFile[]
+    matchingParsedFiles?: IParsedFile[]
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -21,28 +22,32 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
 }
 
-export const getStaticProps: GetStaticProps<PostsPageProps> = async (context) => {
-    const params = context.params as types.IParams;
+export const getStaticProps: GetStaticProps<PostsPageProps, IParams> = async (context) => {
+    const params = context.params as IParams;
     const fileNames = await serverUtils.getFilePaths("./_content/_posts");
     const matchingFileNames = await serverUtils.getFileNames("./_content/_posts", true, params.slug);
     const matchingFilePaths = await serverUtils.getFilePaths("./_content/_posts", params.slug);
-    const matchingPosts = await serverUtils.getPosts(matchingFilePaths);
+    const matchingParsedFiles = await serverUtils.getParsedFiles(matchingFilePaths);
 
     return {
         props:{
-            allPosts: fileNames,
+            allFileNames: fileNames,
             matchingFileNames: matchingFileNames,
-            matchingPosts: matchingPosts,
+            matchingParsedFiles: matchingParsedFiles,
         }
     };
 }
 
 export default function PostsPage(props: PostsPageProps){
+    const [posts, setPosts] = useState<Post[] | null>(null);
     const router = useRouter();
     const slug = _.isArray(router.query.slug) ? router.query.slug : [];
-    const allPosts = _.isArray(props.allPosts) ? props.allPosts : [];
+    const allFileNames = _.isArray(props.allFileNames) ? props.allFileNames : [];
     const matchingFileNames = _.isArray(props.matchingFileNames) ? props.matchingFileNames : []; 
-    
+    const matchingPosts = props.matchingParsedFiles ? props.matchingParsedFiles.map(parsedFile => utils.parsedFileToPost(parsedFile)) : null;
+    if(!posts){
+        setPosts(matchingPosts);
+    }
     const slugMatchParagraph = (
         <div>
             {(matchingFileNames.length > 0 ? <h3 className="TextGreen">Slug did match a Post</h3> : <h3 className="TextRed">Slug did not match a Post</h3>)}
@@ -57,10 +62,15 @@ export default function PostsPage(props: PostsPageProps){
         </div>
     );
 
-    const matchingPostParagraph = props.matchingPosts?.length ?  (
+    const matchingPostParagraph = (posts && posts.length) ?  (
         <div style={{padding: "50px"}}>
-            <h3>{props.matchingPosts[0].attributes.title}</h3>
-            {props.matchingPosts[0].body}
+            <h3>Title: {posts[0].title}</h3>
+            <h4>Category: <strong>{posts[0].category}</strong></h4>
+            <h4>Tags: {posts[0].tags.map(tag => (
+                <span>{tag}&nbsp;</span>
+            ))}</h4>
+            <h4>Publish date: {utils.dateToDateString(posts[0].date)}</h4>
+            {posts[0].body}
         </div>
     ) : <p className="TextRed">No Posts Matched</p>;
 
@@ -82,7 +92,7 @@ export default function PostsPage(props: PostsPageProps){
             <h3>All Posts:</h3>
             <ul>
                 {
-                    (allPosts.length > 0) ? allPosts.map(postName => {
+                    (allFileNames.length > 0) ? allFileNames.map(postName => {
                         return <li>{postName}</li>
                     }) : null
                 }

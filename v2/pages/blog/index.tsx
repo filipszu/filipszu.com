@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import * as serverUtils from '../../utils/server';
+import * as serverUtils from '../../lib/utils/server';
 
 export interface BlogPageProps{
     files: string[]

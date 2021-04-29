@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Home from '../components/home/Home';
 import {promises as fs} from 'fs';
-import * as utils from "../utils";
+import * as utils from "../lib/utils";
 
 interface HomePageProps{
   aboutText: string;
