@@ -6,6 +6,7 @@ declare interface IParsedFile{
         category?: string,
         date: string,
     },
+    slug: string
 }
 
 declare module 'json-front-matter'{

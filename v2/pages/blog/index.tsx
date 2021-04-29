@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import * as serverUtils from '../../lib/utils/server';
 import Post from "../../lib/models/Post";
 import * as utils from "../../lib/utils";
+import Link from "next/link";
 
 export interface BlogPageProps{
     files: string[],
@@ -31,7 +32,8 @@ export default function BlogPage(props: BlogPageProps){
             <h1>Blog Page</h1>
             <ul>
                 {posts ? posts.map(post => {
-                    return <li>{post.title}</li>
+                    const linkHref = ("/blog/" + post.slug);
+                    return <li><Link href={linkHref}>{post.title}</Link></li>
                 }) : null}
             </ul>
         </Fragment>

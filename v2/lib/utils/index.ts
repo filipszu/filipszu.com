@@ -30,7 +30,8 @@ export function parsedFileToPost(parsedFile: IParsedFile){
             body: body,
             tags: tags,
             category: category,
-            date: date
+            date: date,
+            slug: parsedFile.slug
         });
         return post;
     }else{

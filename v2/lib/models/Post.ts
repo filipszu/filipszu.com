@@ -8,7 +8,8 @@ export default class Post {
     category: string = "";
     date: Date = new Date();
     body: string = "";
-    constructor(defaultValues?: {title?: string, body?: string, tags?: string[], category?: string, date?: string | Date}){
+    slug: string = "";
+    constructor(defaultValues?: {title?: string, body?: string, tags?: string[], category?: string, date?: string | Date, slug?: string}){
         defaultValues = defaultValues || {};
         if(defaultValues.title && isString(defaultValues.title)){
             this.title = defaultValues.title;
@@ -29,6 +30,9 @@ export default class Post {
         }
         if(defaultValues.body && isString(defaultValues.body)){
             this.body = marked(defaultValues.body);
+        }
+        if(defaultValues.slug && isString(defaultValues.slug)){
+            this.slug = defaultValues.slug;
         }
     }
 }

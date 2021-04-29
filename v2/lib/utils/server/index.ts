@@ -59,11 +59,15 @@ export async function getFileNames(dir: string, includeExtensions = false, query
     } 
 
     fileNames = fileNames.map(filePath => {
-        return includeExtensions ? path.basename(filePath) : path.basename(filePath).replace(/\.[^/.]+$/, "");
+        return getFileName(filePath);
     });
 
     return fileNames;
 };
+
+export function getFileName(filePath: string, includeExtensions = false){
+    return includeExtensions ? path.basename(filePath) : path.basename(filePath).replace(/\.[^/.]+$/, "");
+}
 
 /**
  * An async function that given an Array of filePaths will return an Array of Objects implementing the IParsedFile interface.
@@ -71,7 +75,6 @@ export async function getFileNames(dir: string, includeExtensions = false, query
  * @returns An Array of Objects implementing the IParsedFile interface.
  */
 export async function getParsedFiles(filePaths: string[]) {
-    console.log(filePaths);
     let result = [] as IParsedFile[];
     if(filePaths.length){
         result = await Promise.all(filePaths.map(async filePath => {
@@ -95,7 +98,7 @@ export async function getParsedFile(filePath: string){
     }
     if(parsedFile.attributes){
         if("title" in parsedFile.attributes === false){
-            parsedFile.attributes.title = filePath;
+            parsedFile.attributes.title = getFileName(filePath);
         }
         if("date" in parsedFile.attributes === false){
             parsedFile.attributes.date = utils.dateToDateString();
@@ -108,11 +111,13 @@ export async function getParsedFile(filePath: string){
         }
     }else{
         parsedFile.attributes = {
-            title: filePath,
+            title: getFileName(filePath),
             date: utils.dateToDateString(),
             category: "",
             tags: [],
         };
     }
+
+    parsedFile.slug = getFileName(filePath);
     return parsedFile;
 }
