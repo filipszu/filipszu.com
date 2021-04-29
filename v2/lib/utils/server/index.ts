@@ -71,6 +71,7 @@ export async function getFileNames(dir: string, includeExtensions = false, query
  * @returns An Array of Objects implementing the IParsedFile interface.
  */
 export async function getParsedFiles(filePaths: string[]) {
+    console.log(filePaths);
     let result = [] as IParsedFile[];
     if(filePaths.length){
         result = await Promise.all(filePaths.map(async filePath => {
@@ -99,10 +100,18 @@ export async function getParsedFile(filePath: string){
         if("date" in parsedFile.attributes === false){
             parsedFile.attributes.date = utils.dateToDateString();
         }
+        if("category" in parsedFile.attributes === false){
+            parsedFile.attributes.category = "";
+        }
+        if("tags" in parsedFile.attributes === false){
+            parsedFile.attributes.tags = [];
+        }
     }else{
         parsedFile.attributes = {
             title: filePath,
-            date: utils.dateToDateString()
+            date: utils.dateToDateString(),
+            category: "",
+            tags: [],
         };
     }
     return parsedFile;

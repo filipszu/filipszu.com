@@ -34,10 +34,7 @@ export function parsedFileToPost(parsedFile: IParsedFile){
         });
         return post;
     }else{
-        const missingProps = parsedFileProps
-            .filter(parsedFileProp => (parsedFileProp in parsedFile === false))
-            .join(" ");
-        throw `parsedFileToPost expects an object implementing IParsedFile. Object passed is missing prop(s): ${missingProps}`;
+        throw `parsedFileToPost expects an object implementing IParsedFile. Got ${typeof parsedFile}`;
     }
 }
 
