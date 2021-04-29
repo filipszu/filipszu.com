@@ -1,9 +1,11 @@
 import classes from "./Footer.module.css";
 import { isMobile, isTablet } from 'react-device-detect';
+import Link from "next/link";
 
 const footer = () => {
     let links = (
         <div>
+            |&nbsp;<Link href="/blog">Blog</Link>&nbsp;
             |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://twitter.com/filipszu">@filipszu</a>&nbsp;
             |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://github.com/filipszu">GitHub</a>&nbsp;
             |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://stackoverflow.com/users/9680496/filip-szulczewski">StackOverflow</a>&nbsp;
@@ -14,6 +16,7 @@ const footer = () => {
     if(isMobile || isTablet){
         links = (
             <div>
+                |&nbsp;<Link href="/blog">Blog</Link>&nbsp;
                 |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://twitter.com/filipszu">@filipszu</a>&nbsp;
                 |&nbsp;<a target="_blank" rel="nofollow noopener noreferrer" href="https://github.com/filipszu">GitHub</a>&nbsp;|
                 <br />

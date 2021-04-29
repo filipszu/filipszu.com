@@ -7,6 +7,7 @@ import * as utils from "../../lib/utils";
 import Post from "../../lib/models/Post";
 import IParams from "../../lib/types/IParams";
 import SlugDebugger from "../../lib/components/debug/slugDebugger";
+import Header from "../../lib/components/blog/Header/Header";
 
 export interface PostsPageProps{
     allFileNames?: string[],
@@ -59,6 +60,7 @@ export default function PostsPage(props: PostsPageProps){
     if(posts){
         postFragment = (
             <Fragment>
+                <Header />
                 <h3>Title: {posts[0].title}</h3>
                 <h4>Category: <strong>{posts[0].category}</strong></h4>
                 <h4>Tags: {posts[0].tags.map(tag => (

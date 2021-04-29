@@ -1,0 +1,48 @@
+.NavBar {
+    border-bottom: 3px dashed #CB0077;
+    background-color: rgba(0, 0, 0, .85);
+    padding: 10px;
+}
+
+.Logo{
+    position: relative;
+    top: 5px;
+    width: 220px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.Logo a {
+    display: block;
+}
+
+.Logo a:hover{
+    text-decoration: none;
+}
+
+.Logo h1, .Logo h4{
+    color: white;
+	margin: 0px;
+	padding:0px;
+}
+
+.Logo h1{
+    font-size: 42px;
+}
+
+.Logo h4{
+    position: relative;
+	top: -4px;
+	left: 35px;
+	color: #A2EF00;
+    font-size: 24px;
+}
+
+
+.SiteTitle{
+    text-align: center;
+    position: relative;
+    top: -24px;
+    font-size: 32px;
+    color: #CB0077;
+}
