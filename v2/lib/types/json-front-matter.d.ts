@@ -1,11 +1,7 @@
 declare interface IFrontMatterParsedFile{
     body: string,
     attributes?: {
-        date?: string,
-        title?: string,
-        tags?: string[],
-        category?: string,
-        previewLength?: number,
+        [key: string]: any
     }
 }
 
