@@ -1,0 +1,9 @@
+.PostsAggregates{
+    border: 2px dashed #CB0077;
+    color: #999;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, .85);
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+}
