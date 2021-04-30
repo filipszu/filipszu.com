@@ -28,9 +28,12 @@ export async function getStaticProps(){
 export default function BlogPage(props: BlogPageProps){
     const [posts, setPosts] = useState<Post[] | null>(null);
     const matchingPosts = props.parsedFiles ? props.parsedFiles.map(parsedFile => utils.seriaziablePostToPost(parsedFile)) : null;
+    const allCategories = matchingPosts ? utils.getAllCategoriesFromPosts(matchingPosts) : null;
+    const allTags = matchingPosts ? utils.getAllTagsFromPosts(matchingPosts) : null;
     if(!posts){
         setPosts(matchingPosts)
     }
+
     return (
         <Fragment>
             <Header />
@@ -40,7 +43,7 @@ export default function BlogPage(props: BlogPageProps){
                         <PostsList posts={posts}/>
                     </section>
                     <section className={classes.SideBarSection}>
-                        <PostsAggregates />
+                        <PostsAggregates tags={allTags} categories={allCategories}/>
                     </section>
                 </div>
             </div>

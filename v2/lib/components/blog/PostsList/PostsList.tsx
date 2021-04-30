@@ -11,7 +11,7 @@ export default function PostsList(props: PostsListProps){
 
     return (
         <div className={classes.PostsList}>
-            {utils.getPostsByDate(posts, true).map(post => (
+            {utils.getPostsByDate(posts).map(post => (
                 <PostPreview key={post.slug} post={post}/>
             ))}
         </div>

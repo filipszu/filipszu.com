@@ -7,3 +7,24 @@
     padding: 19px;
     margin-bottom: 20px;
 }
+
+.PostsAggregates ul {
+    list-style: none;
+    padding-inline-start: 0;
+    padding: 3px 15px;
+    margin: .2em 0;
+}
+
+.PostsAggregates li {
+    line-height: 18px;
+    display: list-item;
+    margin: .2em 0;
+}
+
+.PostsAggregates div {
+    display: block;
+    padding: 3px 15px;
+    font-weight: bold;
+    color: #999999;
+    text-transform: uppercase;
+}
