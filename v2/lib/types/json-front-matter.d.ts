@@ -1,14 +1,14 @@
-declare interface IParsedFile{
+declare interface IFrontMatterParsedFile{
     body: string,
-    attributes: {
+    attributes?: {
+        date?: string,
         title?: string,
         tags?: string[],
         category?: string,
-        date: string,
-    },
-    slug: string
+        previewLength?: number,
+    }
 }
 
 declare module 'json-front-matter'{
-    export function parse(inputString: String): IParsedFile;
+    export function parse(inputString: String): IFrontMatterParsedFile;
 };

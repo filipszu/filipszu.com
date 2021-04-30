@@ -8,11 +8,12 @@ import Post from "../../lib/models/Post";
 import IParams from "../../lib/types/IParams";
 import SlugDebugger from "../../lib/components/debug/slugDebugger";
 import Header from "../../lib/components/blog/Header/Header";
+import ISerializablePost from "../../lib/models/ISerializablePost";
 
 export interface PostsPageProps{
     allFileNames?: string[],
     matchingFileNames?: string[],
-    matchingParsedFiles?: IParsedFile[]
+    matchingParsedFiles?: ISerializablePost[]
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -29,7 +30,7 @@ export const getStaticProps: GetStaticProps<PostsPageProps, IParams> = async (co
     const fileNames = await serverUtils.getFilePaths("./_content/_posts");
     const matchingFileNames = await serverUtils.getFileNames("./_content/_posts", true, params.slug);
     const matchingFilePaths = await serverUtils.getFilePaths("./_content/_posts", params.slug);
-    const matchingParsedFiles = await serverUtils.getParsedFiles(matchingFilePaths);
+    const matchingParsedFiles = await serverUtils.getSeriaziablePosts(matchingFilePaths);
 
     return {
         props:{
@@ -44,7 +45,7 @@ export default function PostsPage(props: PostsPageProps){
     const [posts, setPosts] = useState<Post[] | null>(null);
     const router = useRouter();
 
-    const matchingPosts = props.matchingParsedFiles ? props.matchingParsedFiles.map(parsedFile => utils.parsedFileToPost(parsedFile)) : null;
+    const matchingPosts = props.matchingParsedFiles ? props.matchingParsedFiles.map(parsedFile => utils.seriaziablePostToPost(parsedFile)) : null;
     
     // Usefull for debugging slugs
     // const slug = _.isArray(router.query.slug) ? router.query.slug : [];

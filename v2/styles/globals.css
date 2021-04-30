@@ -37,7 +37,15 @@ body {
 }
 
 a {
-  color: #A2EF00 !important;
+  color: #A2EF00;
   text-decoration: none;
+}
+
+a:hover{
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 1.5em;
 }
 

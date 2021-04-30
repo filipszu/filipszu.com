@@ -4,15 +4,17 @@ import Post from "../../lib/models/Post";
 import * as utils from "../../lib/utils";
 import Link from "next/link";
 import Header from '../../lib/components/blog/Header/Header';
+import ISerializablePost from '../../lib/models/ISerializablePost';
+import PostPreview from '../../lib/components/blog/PostPreview/PostPreview';
 
 export interface BlogPageProps{
     files: string[],
-    parsedFiles: IParsedFile[]
+    parsedFiles: ISerializablePost[]
 }
 
 export async function getStaticProps(){
     const files = await serverUtils.getFilePaths("./_content/_posts");
-    const parsedFiles = await serverUtils.getParsedFiles(files);
+    const parsedFiles = await serverUtils.getSeriaziablePosts(files);
 
     return {
         props: {
@@ -24,19 +26,20 @@ export async function getStaticProps(){
 
 export default function BlogPage(props: BlogPageProps){
     const [posts, setPosts] = useState<Post[] | null>(null);
-    const matchingPosts = props.parsedFiles ? props.parsedFiles.map(parsedFile => utils.parsedFileToPost(parsedFile)) : null;
+    const matchingPosts = props.parsedFiles ? props.parsedFiles.map(parsedFile => utils.seriaziablePostToPost(parsedFile)) : null;
     if(!posts){
         setPosts(matchingPosts)
     }
     return (
         <Fragment>
             <Header />
-            <ul>
+            <div>
                 {posts ? posts.map(post => {
-                    const linkHref = ("/blog/" + post.slug);
-                    return <li><Link href={linkHref}>{post.title}</Link></li>
+                    return (
+                        <PostPreview post={post} />
+                    )
                 }) : null}
-            </ul>
+            </div>
         </Fragment>
     );
 };

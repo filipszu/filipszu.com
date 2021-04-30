@@ -1,0 +1,50 @@
+.PostPreview{
+    background-color: rgba(0, 0, 0, .85);
+    padding: 1em;
+    margin-bottom: .5em;
+}
+
+.Header {
+    border-bottom: 3px dashed #999;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.DateLabel{
+    font-size: 18px;
+    color: #999;
+    margin-right: .5em;
+}
+.DateValue{
+    font-size: 18px;
+    color: white;
+}
+
+.Content{
+    padding: 0;
+}
+
+.Tags {
+    padding-top: 1em;
+    margin-top: 1em;
+    border-top: 3px dashed #999;
+}
+
+.Tags a{
+    color: white;
+}
+
+.TagsLabel {
+    color: #999;
+    margin-right: .5em;
+}
+
+.TagLabel{
+    padding: .3em;
+    background-color: #CB0077;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+    border-radius: 3px;
+    margin-right: .3em;
+}
