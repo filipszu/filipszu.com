@@ -83,3 +83,7 @@ export function getPreview(postBody: string, previewLength?: number, ){
         throw `getPreview expects a string as an argument. Recieved an object of type: ${typeof postBody}`;
     }
 }
+
+export function getPostsByDate(posts: Post[], ascending = true){
+    return posts.sort((post1, post2) => ((post1.date.getTime > post2.date.getTime) ? (ascending ? 1 : -1): (ascending ? -1 : 1)))
+}
