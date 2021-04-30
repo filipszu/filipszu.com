@@ -1,3 +1,9 @@
 .PostsList{
     
 }
+.ListButtons{
+    display: flex;
+}
+.ListButtons *{
+    margin-right: .5em;
+}
