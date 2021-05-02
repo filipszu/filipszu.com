@@ -46,6 +46,30 @@ export function getStringsMatchingQuery(query: string[], haystack: string[]){
     return result;
 }
 
+export function getSerializablePostMatchingQuery(query: string[], haystack: ISerializablePost[]){
+    let result = [] as ISerializablePost[];
+    if(query.length === 1){
+        result = haystack.filter(seriaziablePost => {
+            return seriaziablePost.slug.search(query[0]) !== -1;
+        });
+    }
+    if(query.length > 1){
+        result = haystack.filter(seriaziablePost => {
+            if(query[0] === "category"){
+                if(seriaziablePost.attributes.category && seriaziablePost.attributes.category===query[1]){
+                    return true;
+                }
+            }
+            if(query[0] === "tag"){
+                if(seriaziablePost.attributes.tags){
+                    return seriaziablePost.attributes.tags.filter(tag => tag === query[1]).length > 0
+                }
+            }
+        });
+    }
+    return result;
+}
+
 /**
  * An async function that given a dircetory path will attempt to recursively traverse the folder and return an Array of file names without extensions.
  * @param dir Directory to be read
@@ -82,13 +106,21 @@ export function getFileName(filePath: string, includeExtensions = false){
  * @param filePaths An Array of strings which should be the filePaths of files to be read and parsed. 
  * @returns An Array of Objects implementing the IFrontMatterParsedFile interface.
  */
-export async function getSeriaziablePosts(filePaths: string[]) {
+export async function getSeriaziablePosts(dir: string, query?: string[]) {
     let result = [] as ISerializablePost[];
+    const filePaths = await getFilePaths(dir);
     if(filePaths.length){
+        debugger;
         result = await Promise.all(filePaths.map(async filePath => {
-            const parsedFile = await getSeriaziablePost(filePath);
-            return parsedFile;
+            const serializablePost = await getSeriaziablePost(filePath);
+            return serializablePost;
         }));       
+
+        debugger;
+
+        if(_.isArray(query)){
+            result = getSerializablePostMatchingQuery(query, result);
+        } 
     }
     return result;
 }

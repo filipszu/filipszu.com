@@ -14,7 +14,7 @@ export default function PostsAggregates(props: PostsAggregatesProps){
                 <div>CATEGORIES:</div>
                 <ul>
                     {props.categories.map(category => (
-                        <li><Link href="/">{category}</Link></li>
+                        <li key={category}><Link href={`/blog/category/${category}`}>{category}</Link></li>
                     ))}
                 </ul>
             </Fragment>
@@ -27,7 +27,7 @@ export default function PostsAggregates(props: PostsAggregatesProps){
                 <div>Tags:</div>
                 <ul>
                     {props.tags.map(tag => (
-                        <li><Link href="/">{tag}</Link></li>
+                        <li key={tag}><Link href={`/blog/tag/${tag}`}>{tag}</Link></li>
                     ))}
                 </ul>
             </Fragment>

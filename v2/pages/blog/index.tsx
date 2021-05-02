@@ -9,17 +9,14 @@ import classes from './blog.module.css';
 import PostsAggregates from '../../lib/components/blog/PostsAggregates/PostsAggregates';
 
 export interface BlogPageProps{
-    files: string[],
     parsedFiles: ISerializablePost[]
 }
 
 export async function getStaticProps(){
-    const files = await serverUtils.getFilePaths("./_content/_posts");
-    const parsedFiles = await serverUtils.getSeriaziablePosts(files);
+    const parsedFiles = await serverUtils.getSeriaziablePosts("./_content/_posts");
 
     return {
         props: {
-            files: files,
             parsedFiles: parsedFiles
         }
     };

@@ -43,18 +43,20 @@ export default function PostsList(props: PostsListProps){
         });
     };
 
-    if(allPosts.length === 0){
-        const sortedAllPosts = utils.getPostsByDate(posts, false);
-        setAllPosts(sortedAllPosts);
-    }else{
-        if(pagination.postsOnScreen.length === 0){
-            setPagination({
-                postsOnScreen: getPostsOnScreen(0, maxPostsPerPage),
-                currentPage: 0
-            });
+    if(posts.length > 0){
+        if(allPosts.length === 0){
+            const sortedAllPosts = utils.getPostsByDate(posts, false);
+            setAllPosts(sortedAllPosts);
+        }else{
+            if(pagination.postsOnScreen.length === 0){
+                setPagination({
+                    postsOnScreen: getPostsOnScreen(0, maxPostsPerPage),
+                    currentPage: 0
+                });
+            }
         }
     }
-
+    
     useEffect(() => {
         if (router.asPath !== router.route) {
             const currentPageQuery = router.query.currentPage ? parseInt(router.query.currentPage as string) : pagination.currentPage;

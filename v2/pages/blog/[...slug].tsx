@@ -6,14 +6,14 @@ import * as serverUtils from "../../lib/utils/server";
 import * as utils from "../../lib/utils";
 import Post from "../../lib/models/Post";
 import IParams from "../../lib/types/IParams";
-import SlugDebugger from "../../lib/components/debug/slugDebugger";
 import Header from "../../lib/components/blog/Header/Header";
 import ISerializablePost from "../../lib/models/ISerializablePost";
+import PostsList from "../../lib/components/blog/PostsList/PostsList";
 
 export interface PostsPageProps{
-    allFileNames?: string[],
-    matchingFileNames?: string[],
-    matchingParsedFiles?: ISerializablePost[]
+    matchingSeriaziablePosts?: ISerializablePost[],
+    singleView: Boolean,
+    listTitle: string
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -27,51 +27,59 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<PostsPageProps, IParams> = async (context) => {
     const params = context.params as IParams;
-    const fileNames = await serverUtils.getFilePaths("./_content/_posts");
-    const matchingFileNames = await serverUtils.getFileNames("./_content/_posts", true, params.slug);
-    const matchingFilePaths = await serverUtils.getFilePaths("./_content/_posts", params.slug);
-    const matchingParsedFiles = await serverUtils.getSeriaziablePosts(matchingFilePaths);
-
+    const matchingSeriaziablePosts = await serverUtils.getSeriaziablePosts("./_content/_posts", params.slug);
+    const singleView = params.slug ? ["category", "tag", "date"].indexOf(params.slug[0]) === -1 : true;
+    let listTitle = "";
+    if(params.slug && !singleView){
+        listTitle = `Posts for ${params.slug[0]}: ${params.slug[1]}`;
+    }
     return {
         props:{
-            allFileNames: fileNames,
-            matchingFileNames: matchingFileNames,
-            matchingParsedFiles: matchingParsedFiles,
+            matchingSeriaziablePosts: matchingSeriaziablePosts,
+            singleView: singleView,
+            listTitle: listTitle       
         }
     };
 }
 
 export default function PostsPage(props: PostsPageProps){
     const [posts, setPosts] = useState<Post[] | null>(null);
-    const router = useRouter();
-
-    const matchingPosts = props.matchingParsedFiles ? props.matchingParsedFiles.map(parsedFile => utils.seriaziablePostToPost(parsedFile)) : null;
-    
-    // Usefull for debugging slugs
-    // const slug = _.isArray(router.query.slug) ? router.query.slug : [];
-    // const allFileNames = _.isArray(props.allFileNames) ? props.allFileNames : [];
-    // const matchingFileNames = _.isArray(props.matchingFileNames) ? props.matchingFileNames : []; 
-    // const slugDebugger = <SlugDebugger query={router.query} allFileNames={allFileNames} matchingFileNames={matchingFileNames} posts={posts}/>
+    const matchingPosts = props.matchingSeriaziablePosts ? props.matchingSeriaziablePosts.map(seriaziablePost => utils.seriaziablePostToPost(seriaziablePost)) : null;
 
     if(!posts){
         setPosts(matchingPosts);
     }
 
-    let postFragment = null;
-    if(posts){
-        postFragment = (
-            <Fragment>
-                <Header />
-                <h3>Title: {posts[0].title}</h3>
-                <h4>Category: <strong>{posts[0].category}</strong></h4>
-                <h4>Tags: {posts[0].tags.map(tag => (
-                    <span>{tag}&nbsp;</span>
-                ))}</h4>
-                <h4>Publish date: {utils.dateToDateString(posts[0].date)}</h4>
-                <div dangerouslySetInnerHTML={{__html: posts[0].body}}/>
-            </Fragment>
-        );
+    let postsParagraph = <p>No Posts Found, Sorry!</p>
+
+    if(posts && posts.length > 0){
+        if(props.singleView){
+            postsParagraph = (
+                <div>
+                    <h3>Title: {posts[0].title}</h3>
+                    <h4>Category: <strong>{posts[0].category}</strong></h4>
+                    <h4>Tags: {posts[0].tags.map(tag => (
+                            <span>{tag}&nbsp;</span>
+                        ))}
+                    </h4>
+                    <h4>Publish date: {utils.dateToDateString(posts[0].date)}</h4>
+                    <div dangerouslySetInnerHTML={{__html: posts[0].body}}/>
+                </div>
+            );
+        }else{
+            postsParagraph = (
+                <div>
+                    <h3>{props.listTitle}</h3>
+                    <PostsList posts={posts}/>
+                </div>
+            );
+        }
     }
 
-    return postFragment;
+    return (
+        <Fragment>
+            <Header />
+            {postsParagraph}
+        </Fragment>
+    );
 };

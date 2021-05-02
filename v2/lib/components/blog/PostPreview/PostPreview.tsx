@@ -18,7 +18,7 @@ export default function PostPreview(props: PostPreviewProps){
             <div className={classes.Tags}>
                 <span className={classes.TagsLabel}>TAGS: </span>
                 {props.post.tags.map(postTag => (
-                    <span className={classes.TagLabel}>
+                    <span key={postTag} className={classes.TagLabel}>
                         <Link href="/">{postTag}</Link>
                     </span>
                 ))}
