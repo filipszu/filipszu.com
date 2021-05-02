@@ -34,7 +34,7 @@ export default function BlogBody(props: BlogBodyProps){
         if(props.singleView){
             postsParagraph = (
                 <div>
-                    <h3>Title: {posts[0].title}</h3>
+                    <h1>Title: {posts[0].title}</h1>
                     <h4>Category: <strong>{posts[0].category}</strong></h4>
                     <h4>Tags: {posts[0].tags.map(tag => (
                             <span>{tag}&nbsp;</span>
@@ -47,7 +47,7 @@ export default function BlogBody(props: BlogBodyProps){
         }else{
             postsParagraph = (
                 <div>
-                    {props.listTitle.length > 0 ? <h3>{props.listTitle}</h3> : null}
+                    {props.listTitle.length > 0 ? <h1>{props.listTitle}</h1> : null}
                     <PostsList posts={posts}/>
                 </div>
             );

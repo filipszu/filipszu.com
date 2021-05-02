@@ -5,53 +5,33 @@ import * as utils from "../../../utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import _ from "lodash";
+import ListButtons from "./ListButtons/ListButtons";
 
-export interface PostsListProps{
+export interface IPostsListProps{
     posts: Post[] | null
 }
-export default function PostsList(props: PostsListProps){
+
+export interface IPagination{
+    allPosts: Post[],
+    postsOnScreen: Post[], 
+    currentPage: number,
+    maxPostsPerPage: number,
+}
+
+export default function PostsList(props: IPostsListProps){
 
     const router = useRouter();
-    const maxPostsPerPage = 5;
     const posts = props.posts || [];
-    let listButtons = null;
-    let [pagination, setPagination] = useState({
+    let [pagination, setPagination] = useState<IPagination>({
         allPosts: posts,
         postsOnScreen: [] as Post[], 
-        currentPage: 0
+        currentPage: 0,
+        maxPostsPerPage: 5
     });
 
     const getPostsOnScreen = (currentPage: number, maxPostsPerPage: number, allPosts: Post[]) => {
         const startingIndex = currentPage * maxPostsPerPage;
         return allPosts.slice(startingIndex, startingIndex+maxPostsPerPage);
-    };
-
-    const getMaxPages = (maxPostsPerPage: number, allPosts: Post[]) => {
-        return Math.floor(allPosts.length / maxPostsPerPage);
-    };
-
-    const onPaginationButtonClick = (pageNumber: number) => {
-        router.push({
-            pathname: router.pathname,
-            query: {...router.query, currentPage: pageNumber}
-        });
-    };
-
-    const onPrevClick = () => {
-        const currentPage = pagination.currentPage - 1 < 0 ? 0 : pagination.currentPage - 1;
-        router.push({
-            pathname: router.pathname,
-            query: {...router.query, currentPage: currentPage}
-        });
-    };
-
-    const onNextClick = () => {
-        const pagesNumber = getMaxPages(maxPostsPerPage, pagination.allPosts);
-        const currentPage = pagination.currentPage + 1 > pagesNumber ? pagesNumber : pagination.currentPage + 1;
-        router.push({
-            pathname: router.pathname,
-            query: {...router.query, currentPage: currentPage}
-        });
     };
 
     if(posts.length > 0){
@@ -60,18 +40,20 @@ export default function PostsList(props: PostsListProps){
             setPagination({
                 allPosts: [...sortedAllPosts],
                 postsOnScreen: [
-                    ...getPostsOnScreen(0, maxPostsPerPage, sortedAllPosts)
+                    ...getPostsOnScreen(0, pagination.maxPostsPerPage, sortedAllPosts)
                 ],
-                currentPage: 0
+                currentPage: 0,
+                maxPostsPerPage: pagination.maxPostsPerPage
             });
         }else{
             if(pagination.postsOnScreen.length === 0 && pagination.allPosts){
                 setPagination(lastPagination => ({
                     allPosts: [...lastPagination.allPosts],
                     postsOnScreen: [
-                        ...getPostsOnScreen(0, maxPostsPerPage, lastPagination.allPosts)
+                        ...getPostsOnScreen(0, lastPagination.maxPostsPerPage, lastPagination.allPosts)
                     ],
-                    currentPage: 0
+                    currentPage: 0,
+                    maxPostsPerPage: lastPagination.maxPostsPerPage
                 }));
             }
         }
@@ -81,49 +63,25 @@ export default function PostsList(props: PostsListProps){
         if (router.asPath !== router.route) {
             const currentPageQuery = router.query.currentPage ? parseInt(router.query.currentPage as string) : pagination.currentPage;
             if(currentPageQuery > -1 && pagination.allPosts.length > 0){
-                if(maxPostsPerPage > -1 && currentPageQuery !== pagination.currentPage){
+                if(pagination.maxPostsPerPage > -1 && currentPageQuery !== pagination.currentPage){
                     setPagination(lastPagination => ({
-                        allPosts: lastPagination.allPosts,
+                        ...lastPagination,
                         postsOnScreen: [
-                            ...getPostsOnScreen(currentPageQuery, maxPostsPerPage, lastPagination.allPosts)
+                            ...getPostsOnScreen(currentPageQuery, lastPagination.maxPostsPerPage, lastPagination.allPosts)
                         ],
-                        currentPage: currentPageQuery
+                        currentPage: currentPageQuery,
                     }));
                 }else{
                     setPagination(lastPagination => ({
-                        allPosts: lastPagination.allPosts,
+                        ...lastPagination,
                         postsOnScreen: [
                             ...lastPagination.allPosts
-                        ],
-                        currentPage: lastPagination.currentPage
+                        ]
                     }));
                 }
             }
         }
     }, [router]);
-
-    const firstPage = pagination.currentPage === 0;
-    const lastPage = pagination.currentPage === getMaxPages(maxPostsPerPage, pagination.allPosts);
-
-    if(pagination.postsOnScreen.length > 0 && !(firstPage && lastPage)){
-        const pagesArray = new Array(getMaxPages(maxPostsPerPage, pagination.allPosts) + 1).fill(null)
-            .map((nullValue: null, index) => {
-                return index + 1;
-            });
-        listButtons = (
-            <div className={classes.ListButtons}>
-                {firstPage ? null : <button onClick={onPrevClick}>Prev Page</button>}
-                {pagesArray.map((pageNumber, index) => {
-                    return <button key={index}
-                                onClick={() => {onPaginationButtonClick(index)}} 
-                                disabled={index === pagination.currentPage}>
-                                    {pageNumber}
-                            </button>
-                })}
-                {lastPage ? null : <button disabled={lastPage} onClick={onNextClick}>Next Page</button>}
-            </div>
-        );
-    }
 
     return (
         <div>
@@ -131,8 +89,11 @@ export default function PostsList(props: PostsListProps){
                 {pagination.postsOnScreen.map(post => (
                     <PostPreview key={post.slug} post={post}/>
                 ))}
+
             </div>
-            {listButtons}
+            <ListButtons currentPage={pagination.currentPage} 
+                maxPostsPerPage={pagination.maxPostsPerPage} 
+                allPostsLength={pagination.allPosts.length}/>
         </div>
     );
 }
