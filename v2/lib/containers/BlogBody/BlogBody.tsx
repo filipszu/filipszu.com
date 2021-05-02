@@ -11,8 +11,7 @@ export interface BlogBodyProps {
     posts: Post[],
     allCategories: string[] | null,
     allTags: string[] | null,
-    singleView: boolean,
-    listTitle: string
+    singleView: boolean
 }
 
 export default function BlogBody(props: BlogBodyProps){
@@ -47,7 +46,6 @@ export default function BlogBody(props: BlogBodyProps){
         }else{
             postsParagraph = (
                 <div>
-                    {props.listTitle.length > 0 ? <h1>{props.listTitle}</h1> : null}
                     <PostsList posts={posts}/>
                 </div>
             );
@@ -56,7 +54,6 @@ export default function BlogBody(props: BlogBodyProps){
 
     return (
         <Fragment>
-            <Header />
             <div className={classes.MainContentArea}>
                 <div className={classes.SectionWrapper}>
                     <section className={classes.ContentSection}>

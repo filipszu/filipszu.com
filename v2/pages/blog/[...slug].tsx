@@ -5,9 +5,10 @@ import * as utils from "../../lib/utils";
 import IParams from "../../lib/types/IParams";
 import BlogBody from "../../lib/containers/BlogBody/BlogBody";
 import type IBlogPageProps from "./IBlogPageProps";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Post from "../../lib/models/Post";
+import Header from "../../lib/components/blog/Header/Header";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let fileNames = await serverUtils.getFileNames("./_content/_posts");
@@ -61,12 +62,16 @@ export default function PostsPage(props: IBlogPageProps){
         const listType = slug[1];
         listTitle = `Posts for ${whatListType}: ${listType}`;
     }
+    const listTitleParagraph = listTitle.length > 0 ? <h1 style={{marginLeft: "calc(.9em)"}}>{listTitle}</h1> : null;
 
     return (
-        <BlogBody singleView={singleView}
-            posts={matchingPosts} 
-            allCategories={allCategories} 
-            allTags={allTags}
-            listTitle={listTitle}/>
+        <Fragment>
+            <Header />
+            {listTitleParagraph}
+            <BlogBody singleView={singleView}
+                posts={matchingPosts} 
+                allCategories={allCategories} 
+                allTags={allTags}/>
+        </Fragment>
     );
 };

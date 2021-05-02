@@ -3,6 +3,8 @@ import * as utils from "../../lib/utils";
 import type IBlogPageProps from "./IBlogPageProps";
 import { GetStaticProps } from 'next';
 import BlogBody from '../../lib/containers/BlogBody/BlogBody';
+import { Fragment } from 'react';
+import Header from '../../lib/components/blog/Header/Header';
 
 
 export const getStaticProps: GetStaticProps<IBlogPageProps> = async () => {
@@ -21,10 +23,12 @@ export default function BlogPage(props: IBlogPageProps){
     const allTags = allPosts ? utils.getAllTagsFromPosts(allPosts) : null;
     
     return (
-        <BlogBody singleView={false}
-            posts={allPosts}
-            allCategories={allCategories}
-            allTags={allTags}
-            listTitle=""/>
+        <Fragment>
+            <Header />
+            <BlogBody singleView={false}
+                posts={allPosts}
+                allCategories={allCategories}
+                allTags={allTags}/>
+        </Fragment>
     );
 };
