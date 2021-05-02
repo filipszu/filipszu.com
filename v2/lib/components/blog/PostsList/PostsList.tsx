@@ -4,6 +4,7 @@ import PostPreview from "../PostPreview/PostPreview";
 import * as utils from "../../../utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import _ from "lodash";
 
 export interface PostsListProps{
     posts: Post[] | null
@@ -14,15 +15,18 @@ export default function PostsList(props: PostsListProps){
     const maxPostsPerPage = 5;
     const posts = props.posts || [];
     let listButtons = null;
-    let [allPosts, setAllPosts] = useState([] as Post[]);
-    let [pagination, setPagination] = useState({postsOnScreen: [] as Post[], currentPage: 0});
+    let [pagination, setPagination] = useState({
+        allPosts: posts,
+        postsOnScreen: [] as Post[], 
+        currentPage: 0
+    });
 
-    const getPostsOnScreen = (currentPage: number, maxPostsPerPage: number) => {
+    const getPostsOnScreen = (currentPage: number, maxPostsPerPage: number, allPosts: Post[]) => {
         const startingIndex = currentPage * maxPostsPerPage;
         return allPosts.slice(startingIndex, startingIndex+maxPostsPerPage);
     };
 
-    const getMaxPages = (maxPostsPerPage: number) => {
+    const getMaxPages = (maxPostsPerPage: number, allPosts: Post[]) => {
         return Math.floor(allPosts.length / maxPostsPerPage);
     };
 
@@ -35,7 +39,7 @@ export default function PostsList(props: PostsListProps){
     };
 
     const onNextClick = () => {
-        const pagesNumber = getMaxPages(maxPostsPerPage);
+        const pagesNumber = getMaxPages(maxPostsPerPage, pagination.allPosts);
         const currentPage = pagination.currentPage + 1 > pagesNumber ? pagesNumber : pagination.currentPage + 1;
         router.push({
             pathname: router.pathname,
@@ -44,15 +48,24 @@ export default function PostsList(props: PostsListProps){
     };
 
     if(posts.length > 0){
-        if(allPosts.length === 0){
+        if(!_.isEqual(pagination.allPosts, posts)){
             const sortedAllPosts = utils.getPostsByDate(posts, false);
-            setAllPosts(sortedAllPosts);
+            setPagination({
+                allPosts: [...sortedAllPosts],
+                postsOnScreen: [
+                    ...getPostsOnScreen(0, maxPostsPerPage, sortedAllPosts)
+                ],
+                currentPage: 0
+            });
         }else{
-            if(pagination.postsOnScreen.length === 0){
-                setPagination({
-                    postsOnScreen: getPostsOnScreen(0, maxPostsPerPage),
+            if(pagination.postsOnScreen.length === 0 && pagination.allPosts){
+                setPagination(lastPagination => ({
+                    allPosts: [...lastPagination.allPosts],
+                    postsOnScreen: [
+                        ...getPostsOnScreen(0, maxPostsPerPage, lastPagination.allPosts)
+                    ],
                     currentPage: 0
-                });
+                }));
             }
         }
     }
@@ -60,17 +73,23 @@ export default function PostsList(props: PostsListProps){
     useEffect(() => {
         if (router.asPath !== router.route) {
             const currentPageQuery = router.query.currentPage ? parseInt(router.query.currentPage as string) : pagination.currentPage;
-            if(currentPageQuery > -1 && allPosts.length > 0){
+            if(currentPageQuery > -1 && pagination.allPosts.length > 0){
                 if(maxPostsPerPage > -1 && currentPageQuery !== pagination.currentPage){
-                    setPagination({
-                        postsOnScreen: getPostsOnScreen(currentPageQuery, maxPostsPerPage),
+                    setPagination(lastPagination => ({
+                        allPosts: lastPagination.allPosts,
+                        postsOnScreen: [
+                            ...getPostsOnScreen(currentPageQuery, maxPostsPerPage, lastPagination.allPosts)
+                        ],
                         currentPage: currentPageQuery
-                    });
+                    }));
                 }else{
-                    setPagination({
-                        postsOnScreen: allPosts,
+                    setPagination(lastPagination => ({
+                        allPosts: lastPagination.allPosts,
+                        postsOnScreen: [
+                            ...lastPagination.allPosts
+                        ],
                         currentPage: currentPageQuery
-                    });
+                    }));
                 }
             }
         }
@@ -80,7 +99,7 @@ export default function PostsList(props: PostsListProps){
         listButtons = (
             <div className={classes.ListButtons}>
                 <button onClick={onPrevClick}>Prev Page</button>
-                <div>Page {pagination.currentPage+1}/{getMaxPages(maxPostsPerPage)+1}</div>
+                <div>Page {pagination.currentPage+1}/{getMaxPages(maxPostsPerPage, pagination.allPosts)+1}</div>
                 <button onClick={onNextClick}>Next Page</button>
             </div>
         );
@@ -88,7 +107,6 @@ export default function PostsList(props: PostsListProps){
 
     return (
         <div>
-            {listButtons}
             <div className={classes.PostsList}>
                 {pagination.postsOnScreen.map(post => (
                     <PostPreview key={post.slug} post={post}/>

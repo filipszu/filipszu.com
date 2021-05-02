@@ -95,3 +95,27 @@ export function getAllCategoriesFromPosts(posts: Post[]){
 export function getAllTagsFromPosts(posts: Post[]){
     return _.uniq(posts.map(post => post.tags).flat());
 }
+
+export function getPostsMatchingQuery(haystack: Post[], query: string[]){
+    let result = [] as Post[];
+    if(query.length === 1){
+        result = haystack.filter(seriaziablePost => {
+            return seriaziablePost.slug.search(query[0]) !== -1;
+        });
+    }
+    if(query.length > 1){
+        result = haystack.filter(seriaziablePost => {
+            if(query[0] === "category"){
+                if(seriaziablePost.category && seriaziablePost.category===query[1]){
+                    return true;
+                }
+            }
+            if(query[0] === "tag"){
+                if(seriaziablePost.tags){
+                    return seriaziablePost.tags.filter(tag => tag === query[1]).length > 0
+                }
+            }
+        });
+    }
+    return result;
+}

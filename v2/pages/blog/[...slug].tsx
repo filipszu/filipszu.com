@@ -1,20 +1,13 @@
-import { useRouter } from "next/router";
-import { Fragment, useEffect, useState } from "react";
 import _ from "lodash";
 import { GetStaticProps, GetStaticPaths } from "next";
 import * as serverUtils from "../../lib/utils/server";
 import * as utils from "../../lib/utils";
-import Post from "../../lib/models/Post";
 import IParams from "../../lib/types/IParams";
-import Header from "../../lib/components/blog/Header/Header";
-import ISerializablePost from "../../lib/models/ISerializablePost";
-import PostsList from "../../lib/components/blog/PostsList/PostsList";
-
-export interface PostsPageProps{
-    matchingSeriaziablePosts?: ISerializablePost[],
-    singleView: Boolean,
-    listTitle: string
-};
+import BlogBody from "../../lib/containers/BlogBody/BlogBody";
+import type IBlogPageProps from "./IBlogPageProps";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Post from "../../lib/models/Post";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let fileNames = await serverUtils.getFileNames("./_content/_posts");
@@ -25,61 +18,55 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
 }
 
-export const getStaticProps: GetStaticProps<PostsPageProps, IParams> = async (context) => {
+export const getStaticProps: GetStaticProps<IBlogPageProps, IParams> = async (context) => {
     const params = context.params as IParams;
-    const matchingSeriaziablePosts = await serverUtils.getSeriaziablePosts("./_content/_posts", params.slug);
-    const singleView = params.slug ? ["category", "tag", "date"].indexOf(params.slug[0]) === -1 : true;
-    let listTitle = "";
-    if(params.slug && !singleView){
-        listTitle = `Posts for ${params.slug[0]}: ${params.slug[1]}`;
-    }
+    const allSeriaziablePosts = await serverUtils.getSeriaziablePosts("./_content/_posts");
+    const slug = params.slug && params.slug.length > 0 ? params.slug : [];
     return {
         props:{
-            matchingSeriaziablePosts: matchingSeriaziablePosts,
-            singleView: singleView,
-            listTitle: listTitle       
+            allSeriaziablePosts: allSeriaziablePosts,
+            slug: slug,     
         }
     };
 }
 
-export default function PostsPage(props: PostsPageProps){
-    const [posts, setPosts] = useState<Post[] | null>(null);
-    const matchingPosts = props.matchingSeriaziablePosts ? props.matchingSeriaziablePosts.map(seriaziablePost => utils.seriaziablePostToPost(seriaziablePost)) : null;
+export default function PostsPage(props: IBlogPageProps){
+    const router = useRouter();
+    const [matchingPosts, setMatchingPosts] = useState<Post[]>([]);
+    const allPosts = props.allSeriaziablePosts ? props.allSeriaziablePosts.map(seriaziablePost => utils.seriaziablePostToPost(seriaziablePost)) : [];
+    const slug = props.slug && props.slug.length > 0 ? props.slug : [];    
+    const allCategories = allPosts ? utils.getAllCategoriesFromPosts(allPosts) : null;
+    const allTags = allPosts ? utils.getAllTagsFromPosts(allPosts) : null;
+    const singleView = slug && _.isString(slug[0]) ? 
+                        ["category", "tag", "date"].indexOf(slug[0]) === -1 : 
+                        true;
 
-    if(!posts){
-        setPosts(matchingPosts);
+    if(!matchingPosts){
+        setMatchingPosts(utils.getPostsMatchingQuery(allPosts, slug));
     }
 
-    let postsParagraph = <p>No Posts Found, Sorry!</p>
-
-    if(posts && posts.length > 0){
-        if(props.singleView){
-            postsParagraph = (
-                <div>
-                    <h3>Title: {posts[0].title}</h3>
-                    <h4>Category: <strong>{posts[0].category}</strong></h4>
-                    <h4>Tags: {posts[0].tags.map(tag => (
-                            <span>{tag}&nbsp;</span>
-                        ))}
-                    </h4>
-                    <h4>Publish date: {utils.dateToDateString(posts[0].date)}</h4>
-                    <div dangerouslySetInnerHTML={{__html: posts[0].body}}/>
-                </div>
-            );
-        }else{
-            postsParagraph = (
-                <div>
-                    <h3>{props.listTitle}</h3>
-                    <PostsList posts={posts}/>
-                </div>
-            );
+    useEffect(() => {
+        if (router.asPath !== router.route) {
+            const {slug} = router.query as IParams;
+            if(_.isArray(slug)){
+                const newMatchedPosts = utils.getPostsMatchingQuery(allPosts, slug);
+                setMatchingPosts(newMatchedPosts);
+            }       
         }
+    }, [router])
+    
+    let listTitle = "";
+    if(slug && !singleView){
+        const whatListType = slug[0].charAt(0).toUpperCase() + slug[0].slice(1);
+        const listType = slug[1];
+        listTitle = `Posts for ${whatListType}: ${listType}`;
     }
 
     return (
-        <Fragment>
-            <Header />
-            {postsParagraph}
-        </Fragment>
+        <BlogBody singleView={singleView}
+            posts={matchingPosts} 
+            allCategories={allCategories} 
+            allTags={allTags}
+            listTitle={listTitle}/>
     );
 };
