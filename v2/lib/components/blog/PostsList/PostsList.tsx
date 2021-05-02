@@ -30,6 +30,13 @@ export default function PostsList(props: PostsListProps){
         return Math.floor(allPosts.length / maxPostsPerPage);
     };
 
+    const onPaginationButtonClick = (pageNumber: number) => {
+        router.push({
+            pathname: router.pathname,
+            query: {...router.query, currentPage: pageNumber}
+        });
+    };
+
     const onPrevClick = () => {
         const currentPage = pagination.currentPage - 1 < 0 ? 0 : pagination.currentPage - 1;
         router.push({
@@ -88,19 +95,32 @@ export default function PostsList(props: PostsListProps){
                         postsOnScreen: [
                             ...lastPagination.allPosts
                         ],
-                        currentPage: currentPageQuery
+                        currentPage: lastPagination.currentPage
                     }));
                 }
             }
         }
     }, [router]);
 
-    if(pagination.postsOnScreen.length > 0){
+    const firstPage = pagination.currentPage === 0;
+    const lastPage = pagination.currentPage === getMaxPages(maxPostsPerPage, pagination.allPosts);
+
+    if(pagination.postsOnScreen.length > 0 && !(firstPage && lastPage)){
+        const pagesArray = new Array(getMaxPages(maxPostsPerPage, pagination.allPosts) + 1).fill(null)
+            .map((nullValue: null, index) => {
+                return index + 1;
+            });
         listButtons = (
             <div className={classes.ListButtons}>
-                <button onClick={onPrevClick}>Prev Page</button>
-                <div>Page {pagination.currentPage+1}/{getMaxPages(maxPostsPerPage, pagination.allPosts)+1}</div>
-                <button onClick={onNextClick}>Next Page</button>
+                {firstPage ? null : <button onClick={onPrevClick}>Prev Page</button>}
+                {pagesArray.map((pageNumber, index) => {
+                    return <button key={index}
+                                onClick={() => {onPaginationButtonClick(index)}} 
+                                disabled={index === pagination.currentPage}>
+                                    {pageNumber}
+                            </button>
+                })}
+                {lastPage ? null : <button disabled={lastPage} onClick={onNextClick}>Next Page</button>}
             </div>
         );
     }
