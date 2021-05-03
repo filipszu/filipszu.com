@@ -1,0 +1,11 @@
+.Footer{
+    border-top: 2px dashed #CB0077;
+    bottom: 0;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, .85);
+    min-height: 20px;
+    padding: 19px;
+    margin-top: 1em;
+    font-size: 1.3em;
+    text-align: center;
+}

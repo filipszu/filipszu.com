@@ -1,17 +1,7 @@
-.MainContentArea{
-    padding: 10px;
+.BlogContent{
+    background-color: rgba(0, 0, 0, .85);
+    padding: 1em;
 }
-
-.SectionWrapper {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-}
-
-.ContentSection {
-    width: 80%;
-}
-
-.SideBarSection {
-    width: calc(20% - 10px);
+.BlogContent h1{
+    margin: 0;
 }

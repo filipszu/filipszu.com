@@ -8,7 +8,6 @@ import type IBlogPageProps from "./IBlogPageProps";
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Post from "../../lib/models/Post";
-import Header from "../../lib/components/blog/Header/Header";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let fileNames = await serverUtils.getFileNames("./_content/_posts");
@@ -35,9 +34,7 @@ export default function PostsPage(props: IBlogPageProps){
     const router = useRouter();
     const [matchingPosts, setMatchingPosts] = useState<Post[]>([]);
     const allPosts = props.allSeriaziablePosts ? props.allSeriaziablePosts.map(seriaziablePost => utils.seriaziablePostToPost(seriaziablePost)) : [];
-    const slug = props.slug && props.slug.length > 0 ? props.slug : [];    
-    const allCategories = allPosts ? utils.getAllCategoriesFromPosts(allPosts) : null;
-    const allTags = allPosts ? utils.getAllTagsFromPosts(allPosts) : null;
+    const slug = props.slug && props.slug.length > 0 ? props.slug : [];
     const singleView = slug && _.isString(slug[0]) ? 
                         ["category", "tag", "date"].indexOf(slug[0]) === -1 : 
                         true;
@@ -67,12 +64,9 @@ export default function PostsPage(props: IBlogPageProps){
 
     return (
         <Fragment>
-            <Header />
             {listTitleParagraph}
             <BlogBody singleView={singleView}
-                posts={matchingPosts} 
-                allCategories={allCategories} 
-                allTags={allTags}/>
+                posts={matchingPosts}/>
         </Fragment>
     );
 };

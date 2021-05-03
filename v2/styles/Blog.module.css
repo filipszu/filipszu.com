@@ -1,0 +1,17 @@
+.MainContentArea{
+    padding: 10px;
+}
+
+.SectionWrapper {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.ContentSection {
+    width: 80%;
+}
+
+.SideBarSection {
+    width: calc(20% - 10px);
+}
