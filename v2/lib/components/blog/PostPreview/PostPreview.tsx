@@ -7,6 +7,11 @@ export interface PostPreviewProps{
 }
 
 export default function PostPreview(props: PostPreviewProps){
+
+    function getReadMoreLink (post: Post) {
+        return <Link href={`/blog/${post.slug}`}>read more</Link>;
+    }
+
     return (
         <div className={classes.PostPreview}>
             <div className={classes.Header}>
@@ -14,7 +19,10 @@ export default function PostPreview(props: PostPreviewProps){
                 <span className={classes.DateLabel}>PUBLISHED: </span>
                 <span className={classes.DateValue}>{props.post.dateString}</span>
             </div>
-            <div className={classes.Content} dangerouslySetInnerHTML={{__html: props.post.preview}}></div>
+            <div className={classes.Content}>
+                <div dangerouslySetInnerHTML={{__html: props.post.preview}} />
+                {getReadMoreLink(props.post)}
+            </div>
             <div className={classes.Tags}>
                 <span className={classes.TagsLabel}>TAGS: </span>
                 {props.post.tags.map(postTag => (
