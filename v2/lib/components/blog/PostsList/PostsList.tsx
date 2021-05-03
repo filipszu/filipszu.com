@@ -62,24 +62,39 @@ export default function PostsList(props: IPostsListProps){
     useEffect(() => {
         if (router.asPath !== router.route) {
             const currentPageQuery = router.query.currentPage ? parseInt(router.query.currentPage as string) : pagination.currentPage;
-            if(currentPageQuery > -1 && pagination.allPosts.length > 0){
-                if(pagination.maxPostsPerPage > -1 && currentPageQuery !== pagination.currentPage){
-                    setPagination(lastPagination => ({
-                        ...lastPagination,
-                        postsOnScreen: [
-                            ...getPostsOnScreen(currentPageQuery, lastPagination.maxPostsPerPage, lastPagination.allPosts)
-                        ],
-                        currentPage: currentPageQuery,
-                    }));
+            if(currentPageQuery !== pagination.currentPage){
+                const maxPages = Math.floor(pagination.allPosts.length / pagination.maxPostsPerPage);
+                if(currentPageQuery >= 0 && currentPageQuery <= maxPages){
+                    if(pagination.allPosts.length > 0){
+                        if(pagination.maxPostsPerPage > -1 && currentPageQuery !== pagination.currentPage){
+                            let newPostsOnScreen = getPostsOnScreen(currentPageQuery, pagination.maxPostsPerPage, pagination.allPosts);
+                            setPagination(lastPagination => ({
+                                ...lastPagination,
+                                postsOnScreen: [
+                                    ...newPostsOnScreen
+                                ],
+                                currentPage: currentPageQuery,
+                            }));
+                        }
+                    }
                 }else{
-                    setPagination(lastPagination => ({
-                        ...lastPagination,
-                        postsOnScreen: [
-                            ...lastPagination.allPosts
-                        ]
-                    }));
+                    let overwriteCurrentPage = currentPageQuery;
+                    if(currentPageQuery > maxPages){
+                        overwriteCurrentPage = maxPages;
+                    }
+                    if(currentPageQuery < 0){
+                        overwriteCurrentPage = 0;
+                    }
+                    router.replace({
+                        pathname: router.pathname,
+                        query: {
+                            ...router.query,
+                            currentPage: overwriteCurrentPage
+                        }
+                    });
                 }
             }
+            
         }
     }, [router]);
 

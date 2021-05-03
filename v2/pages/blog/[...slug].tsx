@@ -43,7 +43,8 @@ export default function PostsPage(props: IBlogPageProps){
                         true;
 
     if(!matchingPosts){
-        setMatchingPosts(utils.getPostsMatchingQuery(allPosts, slug));
+        const sortedPosts = utils.getPostsByDate(utils.getPostsMatchingQuery(allPosts, slug));
+        setMatchingPosts([...sortedPosts]);
     }
 
     useEffect(() => {
@@ -51,7 +52,7 @@ export default function PostsPage(props: IBlogPageProps){
             const {slug} = router.query as IParams;
             if(_.isArray(slug)){
                 const newMatchedPosts = utils.getPostsMatchingQuery(allPosts, slug);
-                setMatchingPosts(newMatchedPosts);
+                setMatchingPosts([...newMatchedPosts]);
             }       
         }
     }, [router])

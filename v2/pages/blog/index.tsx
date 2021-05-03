@@ -18,7 +18,10 @@ export const getStaticProps: GetStaticProps<IBlogPageProps> = async () => {
 }
 
 export default function BlogPage(props: IBlogPageProps){
-    const allPosts = props.allSeriaziablePosts ? props.allSeriaziablePosts.map(seriaziablePost => utils.seriaziablePostToPost(seriaziablePost)) : [];
+    const allPosts = props.allSeriaziablePosts ? 
+        utils.getPostsByDate(props.allSeriaziablePosts.map(seriaziablePost => utils.seriaziablePostToPost(seriaziablePost))) 
+        : [];
+
     const allCategories = allPosts ? utils.getAllCategoriesFromPosts(allPosts) : null;
     const allTags = allPosts ? utils.getAllTagsFromPosts(allPosts) : null;
     

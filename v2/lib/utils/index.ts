@@ -85,7 +85,11 @@ export function getPreview(postBody: string, previewLength?: number, ){
 }
 
 export function getPostsByDate(posts: Post[], ascending = true){
-    return posts.sort((post1, post2) => ((post1.date.getTime() > post2.date.getTime()) ? (ascending ? 1 : -1): (ascending ? -1 : 1)))
+    if(ascending){
+        return posts.sort((post1, post2) => ((post1.date.getTime() < post2.date.getTime()) ? 1 : -1))
+    }else{
+        return posts.sort((post1, post2) => ((post1.date.getTime() > post2.date.getTime()) ? 1 : -1))
+    }
 }
 
 export function getAllCategoriesFromPosts(posts: Post[]){
