@@ -35,6 +35,11 @@ export default function PostsAggregates(props: PostsAggregatesProps){
     }
     return (
         <div className={classes.PostsAggregates}>
+            <ul>
+                <li>
+                    <Link href="/blog">ALL POSTS</Link>
+                </li>
+            </ul>
             {categoriesParagraph}
             {tagsParagraph}
         </div>

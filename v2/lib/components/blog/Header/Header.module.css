@@ -6,7 +6,8 @@
 
 .Logo{
     position: relative;
-    top: 5px;
+    top: 1em;
+    left: .5em;
     width: 220px;
     cursor: pointer;
     z-index: 10;
@@ -42,7 +43,7 @@
 .SiteTitle{
     text-align: center;
     position: relative;
-    top: -24px;
-    font-size: 32px;
+    top: -.52em;
+    font-size: 2.3em;
     color: #CB0077;
 }

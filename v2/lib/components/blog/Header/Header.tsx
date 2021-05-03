@@ -16,7 +16,7 @@ export default function Header(props: HeaderProps){
                 </Link>
             </div>
             <div className={classes.SiteTitle}>
-                <Link href="/blog">Rambles From The Cut</Link>
+                <a href="/blog">Rambles From The Cut</a>
             </div>
         </nav>
     );
