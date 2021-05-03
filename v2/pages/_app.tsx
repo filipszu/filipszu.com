@@ -9,18 +9,17 @@ import * as utils from "../lib/utils"
 import Post from '../lib/models/Post';
 import ISerializablePost from '../lib/models/ISerializablePost';
 
-function SZUBlog({ Component, pageProps }: AppProps) {
+function SZU({ Component, pageProps }: AppProps) {
   let allTags = [] as string[];
   let allCategories = [] as string[];
-
+  
   if(pageProps.allSeriaziablePosts && pageProps.allSeriaziablePosts.length > 0){
     const posts: Post[] = pageProps.allSeriaziablePosts.map((seriaziablePost: ISerializablePost) => utils.seriaziablePostToPost(seriaziablePost));
     allTags = posts.length > 0 ? utils.getAllTagsFromPosts(posts) : [];
     allCategories = posts.length > 0 ? utils.getAllCategoriesFromPosts(posts) : [];
   }
-  
 
-  return (
+  let appBody = (
     <Fragment>
       <Header />
       <div className={classes.MainContentArea}>
@@ -36,8 +35,13 @@ function SZUBlog({ Component, pageProps }: AppProps) {
       
       <Footer />
     </Fragment>
-    
   );
+
+  if(pageProps.isHome){
+    appBody = <Component {...pageProps} />;
+  }
+
+  return appBody;
 }
 
-export default SZUBlog;
+export default SZU;

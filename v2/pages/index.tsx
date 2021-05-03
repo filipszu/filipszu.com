@@ -4,6 +4,7 @@ import {promises as fs} from 'fs';
 import * as utils from "../lib/utils";
 
 interface HomePageProps{
+  isHome: true;
   aboutText: string;
 }
 
@@ -12,7 +13,8 @@ export async function getStaticProps(){
   const aboutBuffer = await fs.readFile(aboutFile);
   return {
     props: {
-      aboutText: aboutBuffer.toString()
+      isHome: true,
+      aboutText: aboutBuffer.toString(),
     }
   };
 };
