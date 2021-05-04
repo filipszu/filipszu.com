@@ -3,7 +3,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import * as serverUtils from "../../lib/utils/server";
 import * as utils from "../../lib/utils";
 import IParams from "../../lib/types/IParams";
-import BlogBody from "../../lib/containers/BlogBody/BlogBody";
+import BlogBody from "../../lib/components/blog/BlogBody/BlogBody";
 import type IBlogPageProps from "./IBlogPageProps";
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";

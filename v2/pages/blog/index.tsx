@@ -2,7 +2,7 @@ import * as serverUtils from '../../lib/utils/server';
 import * as utils from "../../lib/utils";
 import type IBlogPageProps from "./IBlogPageProps";
 import { GetStaticProps } from 'next';
-import BlogBody from '../../lib/containers/BlogBody/BlogBody';
+import BlogBody from '../../lib/components/blog/BlogBody/BlogBody';
 import { Fragment } from 'react';
 
 

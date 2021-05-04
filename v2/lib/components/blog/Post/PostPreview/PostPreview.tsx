@@ -1,6 +1,7 @@
 import Link from "next/link";
-import Post from "../../../models/Post";
-import classes from "./PostPreview.module.css";
+import Post from "../../../../models/Post";
+import classes from "../Post.module.css";
+import postPreviewClasses from "./PostPreview.module.css";
 
 export interface PostPreviewProps{
     post: Post
@@ -13,14 +14,14 @@ export default function PostPreview(props: PostPreviewProps){
     }
 
     return (
-        <div className={classes.PostPreview}>
+        <div className={classes.Post}>
             <div className={classes.Header}>
                 <h1><Link href={props.post.link}>{props.post.title}</Link></h1>
                 <span className={classes.DateLabel}>PUBLISHED: </span>
                 <span className={classes.DateValue}>{props.post.dateString}</span>
             </div>
             <div className={classes.Content}>
-                <div dangerouslySetInnerHTML={{__html: props.post.preview}} />
+                <div className={[classes.Content, postPreviewClasses.Content].join(" ")} dangerouslySetInnerHTML={{__html: props.post.preview}} />
                 {getReadMoreLink(props.post)}
             </div>
             <div className={classes.Tags}>

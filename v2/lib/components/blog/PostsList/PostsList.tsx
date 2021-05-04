@@ -1,6 +1,6 @@
 import Post from "../../../models/Post";
 import classes from "./PostsList.module.css";
-import PostPreview from "../PostPreview/PostPreview";
+import PostPreview from "../Post/PostPreview/PostPreview";
 import * as utils from "../../../utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
