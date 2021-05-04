@@ -50,20 +50,3 @@ h1 {
   font-size: 1.5em;
 }
 
-pre{
-  display: block;
-  font-family: monospace;
-  white-space: pre;
-  background-color:#CCCCCC;
-  color: black;
-  padding: .8em;
-  border-radius: .1em;
-}
-
-code{
-  background-color: #CCCCCC;
-  color: black;
-  border-radius: .1em;
-  padding: .05em .1em;
-}
-

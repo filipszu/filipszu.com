@@ -1,6 +1,5 @@
 import * as utils from "../utils";
 import {isString, isDate, isArray, isNumber} from "lodash";
-import marked from "marked";
 
 export interface IPostDefaultValues{
     title?: string;
@@ -49,8 +48,8 @@ export default class Post {
             this.previewLength = defaultValues.previewLength;
         }
         if(defaultValues.body && isString(defaultValues.body)){
-            this.body = marked(defaultValues.body);
-            this.preview = marked(utils.getPreview(defaultValues.body, this.previewLength));
+            this.body = defaultValues.body;
+            this.preview = utils.getPreview(defaultValues.body, this.previewLength);
         }
         if(defaultValues.slug && isString(defaultValues.slug)){
             this.slug = defaultValues.slug;
