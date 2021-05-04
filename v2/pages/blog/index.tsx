@@ -4,6 +4,7 @@ import type IBlogPageProps from "./IBlogPageProps";
 import { GetStaticProps } from 'next';
 import BlogBody from '../../lib/components/blog/BlogBody/BlogBody';
 import { Fragment } from 'react';
+import Head from 'next/head';
 
 
 export const getStaticProps: GetStaticProps<IBlogPageProps> = async () => {
@@ -23,6 +24,9 @@ export default function BlogPage(props: IBlogPageProps){
     
     return (
         <Fragment>
+            <Head>
+                <title>Rambles from the cut - FilipSZU Blog</title>
+            </Head>
             <BlogBody singleView={false}
                 posts={allPosts}/>
         </Fragment>

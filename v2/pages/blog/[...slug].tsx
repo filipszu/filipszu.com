@@ -8,6 +8,7 @@ import type IBlogPageProps from "./IBlogPageProps";
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Post from "../../lib/models/Post";
+import Head from "next/head";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     let fileNames = await serverUtils.getFileNames("./_content/_posts");
@@ -62,8 +63,20 @@ export default function PostsPage(props: IBlogPageProps){
     }
     const listTitleParagraph = listTitle.length > 0 ? <h1 style={{marginLeft: "calc(.9em)"}}>{listTitle}</h1> : null;
 
+    let description = "";
+
+    if(singleView && matchingPosts[0]){
+        description = matchingPosts[0].title;
+    }else{
+        description = listTitle;
+    }
+
     return (
         <Fragment>
+            <Head>
+                <title>Rambles from the cut - FilipSZU Blog</title>
+                <meta name="description" content={description}/>
+            </Head>
             {listTitleParagraph}
             <BlogBody singleView={singleView}
                 posts={matchingPosts}/>
