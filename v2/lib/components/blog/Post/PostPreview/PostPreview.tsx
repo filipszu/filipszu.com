@@ -23,11 +23,7 @@ export default function PostPreview(props: PostPreviewProps) {
           {...props}
         />
       ) : (
-        <SyntaxHighlighter
-          PreTag="span"
-          style={customStyle}
-          children={String(children).replace(/\n$/, "")}
-        />
+        <code>{children}</code>
       );
     },
   };

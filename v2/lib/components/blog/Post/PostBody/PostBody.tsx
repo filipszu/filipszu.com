@@ -25,14 +25,7 @@ export default function PostBody(props: IPostBodyProps) {
           {...props}
         />
       ) : (
-        <SyntaxHighlighter
-          PreTag="span"
-          style={customStyle}
-          children={String(children).replace(/\n$/, "")}
-        />
-        // <code className={className} {...props}>
-        //     {children}
-        // </code>
+        <code className="inline-code">{children}</code>
       );
     },
   };

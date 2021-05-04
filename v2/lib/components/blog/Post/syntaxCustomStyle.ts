@@ -7,7 +7,8 @@ const myStyle = {
 myStyle['code[class*="language-"]'] = {
     fontSize: "1.8em",
     fontFamily: "MyPhoneN1280Regular",
-    color: "#AAAAAA"
+    color: "#AAAAAA",
+    lineHeight: "1.1em"
 };
 
 export default myStyle;
