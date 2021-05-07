@@ -3,15 +3,15 @@ import Post from "../../../../models/Post";
 import classes from "../Post.module.css";
 import postPreviewClasses from "./PostPreview.module.css";
 import ReactMarkodwn from "react-markdown";
-import {CustomCodeComponent} from "../CodeBlock/index";
+import { CustomCodeComponent } from "../CodeBlock/index";
 
 export interface PostPreviewProps {
   post: Post;
 }
 
 export default function PostPreview(props: PostPreviewProps) {
-  const customRenderers= {
-    code: CustomCodeComponent
+  const customRenderers = {
+    code: CustomCodeComponent,
   };
 
   function getReadMoreLink(post: Post) {
