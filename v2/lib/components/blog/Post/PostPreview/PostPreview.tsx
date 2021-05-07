@@ -3,29 +3,15 @@ import Post from "../../../../models/Post";
 import classes from "../Post.module.css";
 import postPreviewClasses from "./PostPreview.module.css";
 import ReactMarkodwn from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import customStyle from "../syntaxCustomStyle";
+import {CustomCodeComponent} from "../CodeBlock/index";
 
 export interface PostPreviewProps {
   post: Post;
 }
 
 export default function PostPreview(props: PostPreviewProps) {
-  const customRenderers = {
-    code(node, inline, className, children, ...props) {
-      const match = /language-(\w+)/.exec(className || "");
-      return !inline && match ? (
-        <SyntaxHighlighter
-          style={customStyle}
-          language={match[1]}
-          PreTag="div"
-          children={String(children).replace(/\n$/, "")}
-          {...props}
-        />
-      ) : (
-        <code>{children}</code>
-      );
-    },
+  const customRenderers= {
+    code: CustomCodeComponent
   };
 
   function getReadMoreLink(post: Post) {

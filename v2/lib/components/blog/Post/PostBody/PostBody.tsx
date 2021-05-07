@@ -4,8 +4,7 @@ import postBodyClasses from "./PostBody.module.css";
 import * as utils from "../../../../utils";
 import Link from "next/link";
 import ReactMarkodwn from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import customStyle from "../syntaxCustomStyle";
+import {CustomCodeComponent} from "../CodeBlock";
 
 export interface IPostBodyProps {
   post: Post;
@@ -13,21 +12,7 @@ export interface IPostBodyProps {
 
 export default function PostBody(props: IPostBodyProps) {
   const customRenderers = {
-    code({ node, inline, className, children, ...props }) {
-      const match = /language-(\w+)/.exec(className || "");
-      return !inline && match ? (
-        <SyntaxHighlighter
-          showLineNumbers={true}
-          style={customStyle}
-          language={match[1]}
-          PreTag="div"
-          children={String(children).replace(/\n$/, "")}
-          {...props}
-        />
-      ) : (
-        <code className="inline-code">{children}</code>
-      );
-    },
+    code: CustomCodeComponent
   };
 
   return (
