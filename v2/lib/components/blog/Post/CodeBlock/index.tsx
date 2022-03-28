@@ -11,16 +11,17 @@ const CustomCodeComponent: CodeComponent = ({
 }) => {
   const match = /language-(\w+)/.exec((className as string) || "");
 
-  return !inline && match ? (
-    <SyntaxHighlighter
-      showLineNumbers={true}
-      style={syntaxCustomStyle}
-      language={match[1]}
-      PreTag="div"
-      children={String(children).replace(/\n$/, "")}
-      {...props}
-    />
-  ) : (
+  // return !inline && match ? (
+  //   <SyntaxHighlighter
+  //     showLineNumbers={true}
+  //     style={syntaxCustomStyle}
+  //     language={match[1]}
+  //     PreTag="div"
+  //     children={String(children).replace(/\n$/, "")}
+  //     {...props}
+  //   />
+  // ) : 
+  return (
     <code style={{ ...CustomStyles.general, ...CustomStyles.inline }}>
       {children}
     </code>

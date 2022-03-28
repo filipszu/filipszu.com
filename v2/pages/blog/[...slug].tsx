@@ -4,7 +4,7 @@ import * as serverUtils from "../../lib/utils/server";
 import * as utils from "../../lib/utils";
 import IParams from "../../lib/types/IParams";
 import BlogBody from "../../lib/components/blog/BlogBody/BlogBody";
-import type IBlogPageProps from "./IBlogPageProps";
+import type IBlogPageProps from "../../lib/components/blog/IBlogPageProps";
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Post from "../../lib/models/Post";

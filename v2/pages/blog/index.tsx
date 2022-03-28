@@ -1,6 +1,6 @@
 import * as serverUtils from '../../lib/utils/server';
 import * as utils from "../../lib/utils";
-import type IBlogPageProps from "./IBlogPageProps";
+import type IBlogPageProps from "../../lib/components/blog/IBlogPageProps";
 import { GetStaticProps } from 'next';
 import BlogBody from '../../lib/components/blog/BlogBody/BlogBody';
 import { Fragment } from 'react';

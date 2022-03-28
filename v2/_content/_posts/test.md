@@ -6,3 +6,6 @@
 }}}
 
 # This is a Test of Markdown
+```
+Test of code block
+```
