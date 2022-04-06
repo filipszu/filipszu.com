@@ -12,6 +12,7 @@ export interface WordCloudProps {
 
 const WordCloud = (props: WordCloudProps) => {
     const stampRef = useRef<HTMLCanvasElement | null>(null);
+    const WASM = useRef<{_getRand: () => number} | null>(null);
     const wordTags = [
         {"name": "Javascript"},
         {"name": "Typescript"},
@@ -123,36 +124,39 @@ const WordCloud = (props: WordCloudProps) => {
     }
 
     function animWord(word: Word){
-
-        word.vx = word.vx + (Math.random() * 0.5 - 0.25);
-        word.vy = word.vy + (Math.random() * 0.5 - 0.25);
-        word.vz = word.vz + (Math.random() * 0.003 - 0.0015);
-        
-        word.vx = word.vx * dampen;
-        word.vy = word.vy * dampen;
-        word.vz = word.vz * dampen;
-        
-        word.x = word.x + word.vx;
-        
-        if(word.x + word.width/2 > canvasSize.width){
-            word.x = canvasSize.width * Math.random();
+        if(WASM.current!==null){
+            word.vx = word.vx + (WASM.current._getRand() * 0.5 - 0.25);
+            word.vy = word.vy + (WASM.current._getRand() * 0.5 - 0.25);
+            word.vz = word.vz + (WASM.current._getRand() * 0.003 - 0.0015);
+            
+            word.vx = word.vx * dampen;
+            word.vy = word.vy * dampen;
+            word.vz = word.vz * dampen;
+            
+            word.x = word.x + word.vx;
+            
+            if(word.x + word.width/2 > canvasSize.width){
+                word.x = canvasSize.width * WASM.current._getRand();
+            }
+            
+            if(word.x + word.width/2 < 0){
+                word.x = canvasSize.width * WASM.current._getRand();
+            }
+            
+            word.y = word.y + word.vy;
+            
+            if(word.y - word.height/2 < 0){
+                word.y = canvasSize.height * WASM.current._getRand();
+            }
+            
+            if(word.y + word.height/2 > canvasSize.height){
+                word.y = canvasSize.height * WASM.current._getRand();
+            }
+            
+            word.depth = word.depth + word.vz;
+        }else{
+            console.log("not animating!");
         }
-        
-        if(word.x + word.width/2 < 0){
-            word.x = canvasSize.width * Math.random();
-        }
-        
-        word.y = word.y + word.vy;
-        
-        if(word.y - word.height/2 < 0){
-            word.y = canvasSize.height * Math.random();
-        }
-        
-        if(word.y + word.height/2 > canvasSize.height){
-            word.y = canvasSize.height * Math.random();
-        }
-        
-        word.depth = word.depth + word.vz;
     }
 
     function draw(wordsToDraw: Word[]) {
@@ -177,6 +181,14 @@ const WordCloud = (props: WordCloudProps) => {
 
     useEffect(() => {
         stampRef.current = document.createElement('canvas');
+        if(typeof (window as any).SZU === 'function' && WASM.current === null){
+            console.log("loading WASM!");
+            (window as any).SZU()
+                .then((wasm: {_getRand: () => number}) => {
+                    console.log("got WASM!");
+                    WASM.current = wasm;
+                });
+        }
         window.addEventListener('resize', () => {
             setCanvas();
         });
