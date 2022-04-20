@@ -1,4 +1,4 @@
-import { AppProps } from 'next/dist/next-server/lib/router/router'
+import { AppProps } from 'next/app'
 import { Fragment } from 'react';
 import Footer from '../lib/components/blog/Footer/Footer';
 import Header from '../lib/components/blog/Header/Header';
