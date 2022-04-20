@@ -10,9 +10,18 @@ export interface WordCloudProps {
     interval?: number
 };
 
+
+
+interface WASM {
+    ccall: (funcName: string, returnType: string, argTypes: string[], args: any[]) => any,
+    cwrap: (funcName: string, returnType: string, argTypes: string[], args: any[]) => () => any,
+    _getRand: () => number,
+};
+
 const WordCloud = (props: WordCloudProps) => {
     const stampRef = useRef<HTMLCanvasElement | null>(null);
-    const WASM = useRef<{_getRand: () => number} | null>(null);
+    const WASM = useRef<WASM | null>(null);
+    const getRandFunc = useRef<WASM["_getRand"]|null>(null);
     const wordTags = [
         {"name": "Javascript"},
         {"name": "Typescript"},
@@ -124,10 +133,10 @@ const WordCloud = (props: WordCloudProps) => {
     }
 
     function animWord(word: Word){
-        if(WASM.current!==null){
-            word.vx = word.vx + (WASM.current._getRand() * 0.5 - 0.25);
-            word.vy = word.vy + (WASM.current._getRand() * 0.5 - 0.25);
-            word.vz = word.vz + (WASM.current._getRand() * 0.003 - 0.0015);
+        if(getRandFunc.current!==null){
+            word.vx = word.vx + (getRandFunc.current() * 0.5 - 0.25);
+            word.vy = word.vy + (getRandFunc.current() * 0.5 - 0.25);
+            word.vz = word.vz + (getRandFunc.current() * 0.003 - 0.0015);
             
             word.vx = word.vx * dampen;
             word.vy = word.vy * dampen;
@@ -136,21 +145,21 @@ const WordCloud = (props: WordCloudProps) => {
             word.x = word.x + word.vx;
             
             if(word.x + word.width/2 > canvasSize.width){
-                word.x = canvasSize.width * WASM.current._getRand();
+                word.x = canvasSize.width * getRandFunc.current();
             }
             
             if(word.x + word.width/2 < 0){
-                word.x = canvasSize.width * WASM.current._getRand();
+                word.x = canvasSize.width * getRandFunc.current();
             }
             
             word.y = word.y + word.vy;
             
             if(word.y - word.height/2 < 0){
-                word.y = canvasSize.height * WASM.current._getRand();
+                word.y = canvasSize.height * getRandFunc.current();
             }
             
             if(word.y + word.height/2 > canvasSize.height){
-                word.y = canvasSize.height * WASM.current._getRand();
+                word.y = canvasSize.height * getRandFunc.current();
             }
             
             word.depth = word.depth + word.vz;
@@ -184,9 +193,10 @@ const WordCloud = (props: WordCloudProps) => {
         if(typeof (window as any).SZU === 'function' && WASM.current === null){
             console.log("loading WASM!");
             (window as any).SZU()
-                .then((wasm: {_getRand: () => number}) => {
+                .then((wasm: WASM) => {
                     console.log("got WASM!");
                     WASM.current = wasm;
+                    getRandFunc.current = WASM.current.cwrap("getRand", "number", [], []);
                 });
         }
         window.addEventListener('resize', () => {
