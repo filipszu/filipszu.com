@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import Post from "../../../../models/Post";
 import classes from "../Post.module.css";

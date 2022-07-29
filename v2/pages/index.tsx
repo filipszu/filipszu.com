@@ -1,27 +1,28 @@
-import Head from 'next/head'
-import Home from '../lib/components/home/Home';
-import {promises as fs} from 'fs';
+import React from "react";
+import Head from "next/head";
+import Home from "../lib/components/home/Home";
+import { promises as fs } from "fs";
 import * as utils from "../lib/utils";
 
-interface HomePageProps{
+interface HomePageProps {
   isHome: true;
   aboutText: string;
 }
 
-export async function getStaticProps(){
-  const aboutFile = './_content/about_text/about.html';
+export async function getStaticProps() {
+  const aboutFile = "./_content/about_text/about.html";
   const aboutBuffer = await fs.readFile(aboutFile);
 
   return {
     props: {
       isHome: true,
       aboutText: aboutBuffer.toString(),
-    }
+    },
   };
-};
+}
 
 export default function HomePage(props: HomePageProps) {
-  let description = utils.stripHTMLFromString(props.aboutText);
+  const description = utils.stripHTMLFromString(props.aboutText);
 
   return (
     <div>
@@ -30,7 +31,7 @@ export default function HomePage(props: HomePageProps) {
         <link rel="icon" href="/assets/favicon.png" />
         <meta name="description" content={description} />
       </Head>
-      <Home aboutText={props.aboutText}/>
+      <Home aboutText={props.aboutText} />
     </div>
-  )
+  );
 }

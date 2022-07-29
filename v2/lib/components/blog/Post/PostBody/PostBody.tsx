@@ -1,10 +1,11 @@
+import React from "react";
 import Post from "../../../../models/Post";
 import classes from "../Post.module.css";
 import postBodyClasses from "./PostBody.module.css";
 import * as utils from "../../../../utils";
 import Link from "next/link";
 import ReactMarkodwn from "react-markdown";
-import {CustomCodeComponent} from "../CodeBlock";
+import { CustomCodeComponent } from "../CodeBlock";
 
 export interface IPostBodyProps {
   post: Post;
@@ -12,7 +13,7 @@ export interface IPostBodyProps {
 
 export default function PostBody(props: IPostBodyProps) {
   const customRenderers = {
-    code: CustomCodeComponent
+    code: CustomCodeComponent,
   };
 
   return (
