@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer component responsibble for rendering the links to other platforms. It will render correctly and match the snapshot. 1`] = `
+<footer
+  className="Footer"
+>
+  <div
+    data-testid="szu-footer"
+  >
+    | 
+    <a
+      href="https://twitter.com/filipszu"
+      rel="nofollow noopener noreferrer"
+      target="_blank"
+    >
+      @filipszu
+    </a>
+      | 
+    <a
+      href="https://github.com/filipszu"
+      rel="nofollow noopener noreferrer"
+      target="_blank"
+    >
+      GitHub
+    </a>
+      | 
+    <a
+      href="https://stackoverflow.com/users/9680496/filip-szulczewski"
+      rel="nofollow noopener noreferrer"
+      target="_blank"
+    >
+      StackOverflow
+    </a>
+      | 
+    <a
+      href="https://www.linkedin.com/in/filipszu"
+      rel="nofollow noopener noreferrer"
+      target="_blank"
+    >
+      LinkedIn
+    </a>
+     |
+  </div>
+</footer>
+`;

@@ -1,0 +1,22 @@
+.Logo {
+  font-size: 30px;
+  margin: 0px auto;
+}
+
+.Logo h1,
+.Logo h4 {
+  margin: 0px;
+  padding: 0px;
+}
+
+.Logo h4 {
+  margin-top: -10px;
+  padding-left: 49px;
+  color: #a2ef00;
+}
+
+@media only screen and (max-width: 1366px) {
+  .Logo h4 {
+    font-size: 24px;
+  }
+}

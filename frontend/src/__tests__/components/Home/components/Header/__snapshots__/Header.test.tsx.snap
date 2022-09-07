@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component responsibble for rendering FiliPSZU Software Engineer It will render correctly and match the snapshot. 1`] = `
+<div
+  className="Logo"
+  data-testid="szu-header"
+>
+  <h1>
+    FiliPSZU
+  </h1>
+  <h4>
+    Software Engineer
+  </h4>
+</div>
+`;
