@@ -1,7 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { render, screen } from "@testing-library/react";
-import Header from "../../../../../components/Home/components/Header/Header";
+import Header, {
+  TestID,
+} from "../../../../../components/Home/components/Header/Header";
 
 const hardcodedTitle = "FiliPSZU";
 const hardcodedSubtitle = "Software Engineer";
@@ -12,6 +14,11 @@ describe(`Header component responsibble for rendering ${hardcodedTitle} ${hardco
   test(`It will render correctly and match the snapshot.`, () => {
     const tree = renderer.create(<Header />).toJSON();
     expect(tree).toMatchSnapshot();
+  });
+  test(`[Given] it will render [Then] it will use the appropriate test-id: ${TestID}`, () => {
+    render(<Header />);
+    const el = screen.getByTestId(TestID);
+    expect(el).toBeInTheDocument();
   });
   test(`[Given] no title prop [Then] it will render the hardcoded title: ${hardcodedTitle}`, () => {
     render(<Header />);

@@ -4,7 +4,9 @@ exports[`Footer component responsibble for rendering the links to other platform
 <footer
   className="Footer"
 >
-  <div>
+  <div
+    data-testid="szu-footer"
+  >
     | 
     <a
       href="https://twitter.com/filipszu"

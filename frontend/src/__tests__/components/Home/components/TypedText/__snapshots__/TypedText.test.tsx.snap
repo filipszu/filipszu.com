@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TypedText component responsibble for animating the message It will render correctly and match the snapshot. 1`] = `
-<div>
+<div
+  data-testid="szu-typedtext"
+>
   <p>
     <span
       dangerouslySetInnerHTML={

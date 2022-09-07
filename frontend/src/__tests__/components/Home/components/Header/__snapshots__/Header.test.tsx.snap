@@ -3,6 +3,7 @@
 exports[`Header component responsibble for rendering FiliPSZU Software Engineer It will render correctly and match the snapshot. 1`] = `
 <div
   className="Logo"
+  data-testid="szu-header"
 >
   <h1>
     FiliPSZU

@@ -1,7 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { render, screen } from "@testing-library/react";
-import TypedText from "../../../../../components/Home/components/TypedText/TypedText";
+import TypedText, {
+  TestID,
+} from "../../../../../components/Home/components/TypedText/TypedText";
 
 const hardcodedCursor = "▮";
 const mockedText = "The mocked text.";
@@ -14,7 +16,13 @@ describe(`TypedText component responsibble for animating the message`, () => {
     expect(tree).toMatchSnapshot();
   });
 
-  test(`[Given] It will render [Then] it will render a cursor.`, () => {
+  test(`[Given] it will render [Then] it will use the appropriate test-id: ${TestID}`, () => {
+    render(<TypedText text={mockedText} delay={500} interval={10} />);
+    const el = screen.getByTestId(TestID);
+    expect(el).toBeInTheDocument();
+  });
+
+  test(`[Given] it will render [Then] it will render the hardcoded cursor: ${hardcodedCursor}`, () => {
     render(<TypedText text={mockedText} delay={500} interval={10} />);
     const el = screen.getByText(hardcodedCursor);
     expect(el).toBeInTheDocument();

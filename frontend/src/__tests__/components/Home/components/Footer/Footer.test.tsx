@@ -1,7 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { render, screen } from "@testing-library/react";
-import Footer from "../../../../../components/Home/components/Footer/Footer";
+import Footer, {
+  TestID,
+} from "../../../../../components/Home/components/Footer/Footer";
 
 const hardcodedLinks = {
   twitter: { label: "@filipszu", url: "https://twitter.com/filipszu" },
@@ -17,6 +19,13 @@ describe(`Footer component responsibble for rendering the links to other platfor
   test(`It will render correctly and match the snapshot.`, () => {
     const tree = renderer.create(<Footer />).toJSON();
     expect(tree).toMatchSnapshot();
+  });
+  test(`[Given] it will render [Then] it will use the appropriate test-id: ${TestID}`, () => {
+    render(<Footer />);
+    Object.values(hardcodedLinks).forEach((link) => {
+      const el = screen.getByTestId(TestID);
+      expect(el).toBeInTheDocument();
+    });
   });
   test(`[Given] the page will render [Then] there will be a link to all of the hardcoded websites with appropriate labels`, () => {
     render(<Footer />);

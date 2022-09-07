@@ -1,9 +1,11 @@
 import classes from "./Footer.module.css";
 import { isMobile, isTablet } from "react-device-detect";
 
+export const TestID = "szu-footer";
+
 const Footer = () => {
   let links = (
-    <div>
+    <div data-testid={TestID}>
       |&nbsp;
       <a
         target="_blank"

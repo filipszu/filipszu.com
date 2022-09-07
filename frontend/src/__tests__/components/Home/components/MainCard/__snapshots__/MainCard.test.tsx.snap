@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainCard component responsibble for showing the Title, TypedText and Footer It will render correctly and match the snapshot. 1`] = `
+<div
+  className="MainCard"
+  data-testid="szu-maincard"
+>
+  <div
+    className="Logo"
+    data-testid="szu-header"
+  >
+    <h1>
+      FiliPSZU
+    </h1>
+    <h4>
+      Software Engineer
+    </h4>
+  </div>
+  <section
+    className="Content"
+  >
+    <div
+      className="AboutText"
+      data-testid="szu-typedtext"
+    >
+      <p>
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "",
+            }
+          }
+        />
+        <span
+          className="Pulse TextCursor"
+        >
+          ▮
+        </span>
+      </p>
+    </div>
+  </section>
+  <footer
+    className="Footer"
+  >
+    <div
+      data-testid="szu-footer"
+    >
+      | 
+      <a
+        href="https://twitter.com/filipszu"
+        rel="nofollow noopener noreferrer"
+        target="_blank"
+      >
+        @filipszu
+      </a>
+        | 
+      <a
+        href="https://github.com/filipszu"
+        rel="nofollow noopener noreferrer"
+        target="_blank"
+      >
+        GitHub
+      </a>
+        | 
+      <a
+        href="https://stackoverflow.com/users/9680496/filip-szulczewski"
+        rel="nofollow noopener noreferrer"
+        target="_blank"
+      >
+        StackOverflow
+      </a>
+        | 
+      <a
+        href="https://www.linkedin.com/in/filipszu"
+        rel="nofollow noopener noreferrer"
+        target="_blank"
+      >
+        LinkedIn
+      </a>
+       |
+    </div>
+  </footer>
+</div>
+`;
