@@ -1,7 +1,7 @@
 import classes from "./Footer.module.css";
 import { isMobile, isTablet } from "react-device-detect";
 
-const footer = () => {
+const Footer = () => {
   let links = (
     <div>
       |&nbsp;
@@ -84,4 +84,4 @@ const footer = () => {
   return <footer className={classes.Footer}>{links}</footer>;
 };
 
-export default footer;
+export default Footer;
