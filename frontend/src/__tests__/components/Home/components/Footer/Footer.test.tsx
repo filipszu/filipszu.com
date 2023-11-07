@@ -44,4 +44,19 @@ describe(`Footer component responsibble for rendering the links to other platfor
       );
     });
   });
+
+  test(`[Given] the page will render [Then] there will be no additional links`, () => {
+    render(<Footer />);
+    const links = screen.getAllByRole('link');
+    expect(links.length).toBe(Object.keys(hardcodedLinks).length);
+  });
+
+  test(`[Given] the page will render [Then] the links will be in the correct order`, () => {
+    render(<Footer />);
+    const links = screen.getAllByRole('link');
+    Object.values(hardcodedLinks).forEach((link, index) => {
+      expect(links[index]).toHaveAttribute('href', link.url);
+    });
+  });
+  
 });
