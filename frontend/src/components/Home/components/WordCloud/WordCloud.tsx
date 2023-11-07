@@ -22,7 +22,6 @@ const colors = [
 
 const WordCloud = (props: WordCloudProps) => {
     const size = useWindowSize();
-    const stampRef = useRef<HTMLCanvasElement | null>(null);
     const wordTags = useMemo(() => props.wordsTags ? props.wordsTags : [
         {"name": "Javascript"},
         {"name": "Typescript"},
@@ -94,32 +93,36 @@ const WordCloud = (props: WordCloudProps) => {
         }
     }, [canvasRef, resizeCanvas, size]);
 
+    const wordCanvases = useRef(new Map<string, HTMLCanvasElement>());
     const getWordCanvas = useCallback((word: Word) => {
-        let canvas = stampRef.current;
-        if(canvas && word){
-            let ctx = canvas.getContext('2d');
-            let calculatedWidth = 0;
-            let textBaseline: CanvasTextBaseline = "top";
-            let fontSize = 44;
-            let font = `${fontSize}px MyPhoneN1280Regular`;
-            let fillStyle = word.currentColor || "#CB0077";
-            let txt = word.txt || "Test Word even longer";
-            if(ctx){
-                ctx.textBaseline = textBaseline;
-                ctx.font = font;
-                ctx.fillStyle = fillStyle;
-                calculatedWidth = ctx.measureText(txt).width;
-                resizeCanvas(canvas, calculatedWidth, fontSize);
-                ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
-                ctx.font = font;
-                ctx.fillStyle = fillStyle;
-                ctx.fillText(txt, 0, 0);
-                word.width = calculatedWidth;
-                word.height = fontSize;
-            }
+        let canvas = wordCanvases.current.get(word.txt);
+        if (!canvas) {
+            canvas = document.createElement('canvas');
+            wordCanvases.current.set(word.txt, canvas);
         }
+        let ctx = canvas.getContext('2d');
+        let calculatedWidth = 0;
+        let textBaseline: CanvasTextBaseline = "top";
+        let fontSize = 44;
+        let font = `${fontSize}px MyPhoneN1280Regular`;
+        let fillStyle = word.currentColor || "#CB0077";
+        let txt = word.txt || "Test Word even longer";
+        if(ctx){
+            ctx.textBaseline = textBaseline;
+            ctx.font = font;
+            ctx.fillStyle = fillStyle;
+            calculatedWidth = ctx.measureText(txt).width;
+            resizeCanvas(canvas, calculatedWidth, fontSize);
+            ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
+            ctx.font = font;
+            ctx.fillStyle = fillStyle;
+            ctx.fillText(txt, 0, 0);
+            word.width = calculatedWidth;
+            word.height = fontSize;
+        }
+        
         return canvas;
-    }, [stampRef]);
+    }, [resizeCanvas]);
 
     const animWord = useCallback((word: Word) => {
 
@@ -177,7 +180,6 @@ const WordCloud = (props: WordCloudProps) => {
 
     
     useEffect(() => {
-        stampRef.current = document.createElement('canvas');
         const onResize = () => setCanvas();
         window.addEventListener('resize', onResize);
         return () => {
