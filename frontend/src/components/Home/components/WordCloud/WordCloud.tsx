@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
+import { useWindowSize } from '../../hooks/useScreenSize';
 
 export interface WordCloudProps {
     wordMultiplier?: number,
@@ -10,9 +11,18 @@ export interface WordCloudProps {
     interval?: number
 };
 
+
+const colors = [
+    {color: "#FFFFFF", weight: .3}, 
+    {color: "#000000", weight: .3}, 
+    {color: "#CB0077", weight: .3}, 
+    {color: "#A2EF00", weight: .1}
+].sort(colorObj => colorObj.weight);
+
 const WordCloud = (props: WordCloudProps) => {
+    const size = useWindowSize();
     const stampRef = useRef<HTMLCanvasElement | null>(null);
-    const wordTags = [
+    const wordTags = useMemo(() => [
         {"name": "Javascript"},
         {"name": "Typescript"},
         {"name": "HTML"},
@@ -25,19 +35,12 @@ const WordCloud = (props: WordCloudProps) => {
         {"name": "Nginx"},
         {"name": "Linux"},
         {"name": "Video Streaming"},
-    ];
+    ], []);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const wordMultiplier = props.wordMultiplier || 10;
     const dampen = props.dampen || 0.95;
-    const canvasSize = {width: 0, height: 0};
-    let colors = [
-        {color: "#FFFFFF", weight: .3}, 
-        {color: "#000000", weight: .3}, 
-        {color: "#CB0077", weight: .3}, 
-        {color: "#A2EF00", weight: .1}
-    ];
     
-    function createWords(){
+    const createWords = useCallback(() => {
 		var wordsArray: Word[] = [];
 		var count = 0;
 		wordTags.forEach(function(dataObj){
@@ -47,9 +50,9 @@ const WordCloud = (props: WordCloudProps) => {
             count++;
 		});
 		return wordsArray;
-    }
+    }, [wordTags]);
 
-    function createWordsOnScreen(wordObjs: Word[]){
+    const createWordsOnScreen = useCallback((wordObjs: Word[]) => {
         let wordsOnScreen = [];
         for(var i = 0; i < wordObjs.length * wordMultiplier; i++){
             var j = i % wordObjs.length;
@@ -58,7 +61,6 @@ const WordCloud = (props: WordCloudProps) => {
                 ...origin
             }
 
-            colors = colors.sort(colorObj => colorObj.weight);
             clone.currentColor = colors[0].color;
             if(Math.random() > .9){
                 clone.currentColor = colors[3].color;
@@ -68,34 +70,30 @@ const WordCloud = (props: WordCloudProps) => {
                 clone.currentColor = colors[1].color;
             }
             //Initial word placement on screen
-            clone.x = Math.random()*canvasSize.width;
-            clone.y = Math.random()*canvasSize.height;
+            clone.x = Math.random()*size.width;
+            clone.y = Math.random()*size.height;
             wordsOnScreen.push(clone);
         }
         return wordsOnScreen;
-    }
+    }, [wordMultiplier, size]);
 
-    function setCanvas(){
-        let c = canvasRef.current;
-        if(c){
-            resizeCanvas(c, window.innerWidth, window.innerHeight);
-            canvasSize.width = c.width;
-            canvasSize.height = c.height;
-        }
-    }
-
-    function resizeCanvas(canvas: HTMLCanvasElement, width: number, height: number){
+    const resizeCanvas = useCallback((canvas: HTMLCanvasElement, width: number, height: number) => {
         if(canvas && canvas instanceof HTMLCanvasElement && width && height){
             canvas.width = width;
             canvas.height = height;
             canvas.style.width  = `${width}px`;
             canvas.style.height = `${height}px`;
-        }else{
-            throw Error("Bad arguments provided.");
         }
-    }
+    }, []);
 
-    function getWordCanvas(word: Word){
+    const setCanvas = useCallback(() => {
+        let c = canvasRef.current;
+        if(c){
+            resizeCanvas(c, size.width, size.height);
+        }
+    }, [canvasRef, resizeCanvas, size]);
+
+    const getWordCanvas = useCallback((word: Word) => {
         let canvas = stampRef.current;
         if(canvas && word){
             let ctx = canvas.getContext('2d');
@@ -120,9 +118,9 @@ const WordCloud = (props: WordCloudProps) => {
             }
         }
         return canvas;
-    }
+    }, [stampRef]);
 
-    function animWord(word: Word){
+    const animWord = useCallback((word: Word) => {
 
         word.vx = word.vx + (Math.random() * 0.5 - 0.25);
         word.vy = word.vy + (Math.random() * 0.5 - 0.25);
@@ -134,28 +132,28 @@ const WordCloud = (props: WordCloudProps) => {
         
         word.x = word.x + word.vx;
         
-        if(word.x + word.width/2 > canvasSize.width){
-            word.x = canvasSize.width * Math.random();
+        if(word.x + word.width/2 > size.width){
+            word.x = size.width * Math.random();
         }
         
         if(word.x + word.width/2 < 0){
-            word.x = canvasSize.width * Math.random();
+            word.x = size.width * Math.random();
         }
         
         word.y = word.y + word.vy;
         
         if(word.y - word.height/2 < 0){
-            word.y = canvasSize.height * Math.random();
+            word.y = size.height * Math.random();
         }
         
-        if(word.y + word.height/2 > canvasSize.height){
-            word.y = canvasSize.height * Math.random();
+        if(word.y + word.height/2 > size.height){
+            word.y = size.height * Math.random();
         }
         
         word.depth = word.depth + word.vz;
-    }
+    }, [dampen, size]);
 
-    function draw(wordsToDraw: Word[]) {
+    const draw = useCallback((wordsToDraw: Word[]) => {
         const c = canvasRef.current,
             interval = props.interval || 0;
         if(c){
@@ -173,32 +171,40 @@ const WordCloud = (props: WordCloudProps) => {
             }
         }
         return interval;
-    }
+    }, [canvasRef, props.interval, animWord, getWordCanvas]);
 
+
+    
     useEffect(() => {
         stampRef.current = document.createElement('canvas');
-        window.addEventListener('resize', () => {
-            setCanvas();
-        });
+        const onResize = () => setCanvas();
+        window.addEventListener('resize', onResize);
+        return () => {
+            window.removeEventListener('resize', onResize);
+        }
     }, []);
     
-    let wordsOnScreen: Word[] = [],
+    const words = useMemo(() => createWords(), []);
+
+    let wordsOnScreen = useRef<Word[]>([]),
         delay = props.delay || 0;
 
-    useAnimationFrame(time => {
+    const animationFrame = useCallback((time: number) => {
         if(time >= delay){
-            if(wordsOnScreen.length === 0){
+            if(wordsOnScreen.current.length === 0){
                 setCanvas();
-                wordsOnScreen = createWordsOnScreen(createWords());
+                wordsOnScreen.current = createWordsOnScreen(words);
             }
-            return draw(wordsOnScreen);
+            return draw(wordsOnScreen.current);
         }
         return 0;
-    });
+    }, [delay, draw, setCanvas, createWordsOnScreen, words]);
+
+    useAnimationFrame(animationFrame);
 
     return (
         <canvas ref={canvasRef} className={classes.WordCloud} style={{ width: '100px', height: '100px' }}></canvas>
     );
 };
 
-export default WordCloud;
+export default memo(WordCloud);
