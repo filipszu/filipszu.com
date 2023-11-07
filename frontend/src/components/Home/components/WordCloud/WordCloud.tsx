@@ -57,9 +57,7 @@ const WordCloud = (props: WordCloudProps) => {
         for(var i = 0; i < wordObjs.length * wordMultiplier; i++){
             var j = i % wordObjs.length;
             var origin = wordObjs[j];
-            var clone: Word = {
-                ...origin
-            }
+            var clone: Word = new Word(origin.txt, j, origin.x, origin.y, origin.vx, origin.vy, origin.vz);
 
             clone.currentColor = colors[0].color;
             if(Math.random() > .9){
@@ -163,14 +161,15 @@ const WordCloud = (props: WordCloudProps) => {
         if(c){
             const ctx = c.getContext("2d");
             if(ctx){
-                c.width = c.width; //hack to clean the canvas
-
                 wordsToDraw.forEach(function(word){
+                    // Clear the previous area of the word
+                    ctx.clearRect(word.prevX, word.prevY, word.prevWidth * word.getAlpha(), word.prevHeight * word.getAlpha());
+    
                     animWord(word);
                     ctx.globalAlpha = word.getAlpha();
-                    var wordTxt = getWordCanvas(word);
-                    if(wordTxt)
-                        ctx.drawImage(wordTxt, word.x, word.y, wordTxt.width * word.getAlpha(), wordTxt.height * word.getAlpha());
+                    var wordCanvas = getWordCanvas(word);
+                    if(wordCanvas)
+                        ctx.drawImage(wordCanvas, word.x, word.y, wordCanvas.width * word.getAlpha(), wordCanvas.height * word.getAlpha());
                 });
             }
         }
