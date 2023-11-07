@@ -8,7 +8,8 @@ export interface WordCloudProps {
     wordMultiplier?: number,
     dampen?: number,
     delay?: number,
-    interval?: number
+    interval?: number,
+    wordsTags?: {name: string}[]
 };
 
 
@@ -22,7 +23,7 @@ const colors = [
 const WordCloud = (props: WordCloudProps) => {
     const size = useWindowSize();
     const stampRef = useRef<HTMLCanvasElement | null>(null);
-    const wordTags = useMemo(() => [
+    const wordTags = useMemo(() => props.wordsTags ? props.wordsTags : [
         {"name": "Javascript"},
         {"name": "Typescript"},
         {"name": "HTML"},
@@ -35,7 +36,7 @@ const WordCloud = (props: WordCloudProps) => {
         {"name": "Nginx"},
         {"name": "Linux"},
         {"name": "Video Streaming"},
-    ], []);
+    ], [props.wordsTags]);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const wordMultiplier = props.wordMultiplier || 10;
     const dampen = props.dampen || 0.95;
@@ -203,7 +204,7 @@ const WordCloud = (props: WordCloudProps) => {
     useAnimationFrame(animationFrame);
 
     return (
-        <canvas ref={canvasRef} className={classes.WordCloud} style={{ width: '100px', height: '100px' }}></canvas>
+        <canvas ref={canvasRef} data-testid="word-cloud-canvas" className={classes.WordCloud} style={{ width: '100px', height: '100px' }}></canvas>
     );
 };
 
