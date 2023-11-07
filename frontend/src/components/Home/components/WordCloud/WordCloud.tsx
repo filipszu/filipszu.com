@@ -122,7 +122,7 @@ const WordCloud = (props: WordCloudProps) => {
         }
         
         return canvas;
-    }, [resizeCanvas]);
+    }, [resizeCanvas, wordCanvases]);
 
     const animWord = useCallback((word: Word) => {
 
