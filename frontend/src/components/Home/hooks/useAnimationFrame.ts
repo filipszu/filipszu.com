@@ -49,7 +49,8 @@ const useAnimationFrame = (callback: UseAnimationFrameCallback) => {
     }, [callback]);
 
     useEffect(() => {
-        animate(requestRef.current);
+        // requestRef.current = requestAnimationFrame(animate);
+        animate(0);
         return () => cancelAnimationFrame(requestRef.current);
     }, [animate]);
 }
