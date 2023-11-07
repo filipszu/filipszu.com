@@ -9,12 +9,17 @@ describe('WordCloud', () => {
         drawImage?: jest.FunctionLike;
     };
     const mockCanvas = (functionsToMock: FunctionsToMock) => {
+        const mockFillText = functionsToMock.fillText || jest.fn(),
+            mockMeasureText = functionsToMock.measureText || jest.fn(() => ({ width: 100 })),
+            mockDrawImage = functionsToMock.drawImage || jest.fn();
+
+
         window.HTMLCanvasElement.prototype.getContext = jest.fn().mockImplementation((contextId) => {
             if (contextId === '2d') {
                 return {
-                  fillText: functionsToMock.fillText,
-                  measureText: jest.fn(() => ({ width: 100 })),
-                  drawImage: jest.fn(),
+                  fillText: mockFillText,
+                  measureText: mockMeasureText,
+                  drawImage: mockDrawImage,
                   // Add any other methods that you use in your component
                   // Add all other necessary properties with mock values
                 };
