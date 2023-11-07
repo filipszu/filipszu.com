@@ -1,8 +1,6 @@
 import classes from "./TypedText.module.css";
 import { useState } from "react";
-import useAnimationFrame, {
-  useAnimationFrameCallback,
-} from "../../hooks/useAnimationFrame";
+import useAnimationFrame, { UseAnimationFrameCallback } from "../../hooks/useAnimationFrame";
 
 export interface TypedTextProps {
   text: string;
@@ -16,7 +14,7 @@ export const TestID = "szu-typedtext";
 const TypedText = (props: TypedTextProps) => {
   const [typedText, setTypedText] = useState("");
 
-  const type: useAnimationFrameCallback = (time) => {
+  const type: UseAnimationFrameCallback = (time) => {
     let interval = props.interval;
     if (time >= props.delay && props.text !== (null || undefined)) {
       setTypedText((prevTypedText) => {
