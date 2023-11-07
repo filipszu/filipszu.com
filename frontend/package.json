@@ -42,8 +42,8 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react-hooks": "^8.0.1",
     "@types/react-test-renderer": "^18.0.0",
+    "jest-canvas-mock": "^2.5.2",
     "react-test-renderer": "^18.2.0"
   }
 }
