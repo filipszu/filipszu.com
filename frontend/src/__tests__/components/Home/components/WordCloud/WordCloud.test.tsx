@@ -35,7 +35,7 @@ describe('WordCloud', () => {
         expect(canvas).toBeInTheDocument();
     });
 
-    it('call the canvas.fillText with the correct default words', () => {
+    it('[Given] the WordCloud component with default words, [When] it is rendered, [Then] canvas.fillText should be called with the correct default words', () => {
         // Mock the canvas and its context
         const mockFillText = jest.fn();
         mockCanvas({
@@ -50,7 +50,7 @@ describe('WordCloud', () => {
         expect(mockFillText).toHaveBeenCalledWith('Typescript', expect.any(Number), expect.any(Number));
     });
 
-    it('call the canvas.fillText with the correct words', () => {
+    it('[Given] the WordCloud component with custom words, [When] it is rendered, [Then] canvas.fillText should be called with the correct words', () => {
         // Mock the canvas and its context
         const mockFillText = jest.fn();
         mockCanvas({
