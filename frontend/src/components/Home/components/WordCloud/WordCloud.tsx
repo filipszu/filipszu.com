@@ -39,7 +39,7 @@ const WordCloud = (props: WordCloudProps) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const wordMultiplier = props.wordMultiplier || 10;
     const dampen = props.dampen || 0.95;
-    
+
     const createWords = useCallback(() => {
 		var wordsArray: Word[] = [];
 		var count = 0;
@@ -76,7 +76,11 @@ const WordCloud = (props: WordCloudProps) => {
     }, [wordMultiplier, size]);
 
     const resizeCanvas = useCallback((canvas: HTMLCanvasElement, width: number, height: number) => {
-        if(canvas && canvas instanceof HTMLCanvasElement && width && height){
+        const shouldResize = canvas && 
+            canvas instanceof HTMLCanvasElement && 
+            width > 0 && height > 0 &&
+            (canvas.width !== width || canvas.height !== height);
+        if(shouldResize){
             canvas.width = width;
             canvas.height = height;
             canvas.style.width  = `${width}px`;
@@ -123,7 +127,6 @@ const WordCloud = (props: WordCloudProps) => {
     }, [resizeCanvas, wordCanvases]);
 
     const animWord = useCallback((word: Word) => {
-
         word.vx = word.vx + (Math.random() * 0.5 - 0.25);
         word.vy = word.vy + (Math.random() * 0.5 - 0.25);
         word.vz = word.vz + (Math.random() * 0.003 - 0.0015);
@@ -163,28 +166,18 @@ const WordCloud = (props: WordCloudProps) => {
             if(ctx){
                 wordsToDraw.forEach(function(word){
                     // Clear the previous area of the word
-                    ctx.clearRect(word.prevX, word.prevY, word.prevWidth * word.getAlpha(), word.prevHeight * word.getAlpha());
+                    ctx.clearRect(word.prevX, word.prevY, word.prevWidth, word.prevHeight);
     
                     animWord(word);
                     ctx.globalAlpha = word.getAlpha();
                     var wordCanvas = getWordCanvas(word);
                     if(wordCanvas)
-                        ctx.drawImage(wordCanvas, word.x, word.y, wordCanvas.width * word.getAlpha(), wordCanvas.height * word.getAlpha());
+                        ctx.drawImage(wordCanvas, word.x, word.y, wordCanvas.width, wordCanvas.height);
                 });
             }
         }
         return interval;
     }, [canvasRef, props.interval, animWord, getWordCanvas]);
-
-
-    
-    useEffect(() => {
-        const onResize = () => setCanvas();
-        window.addEventListener('resize', onResize);
-        return () => {
-            window.removeEventListener('resize', onResize);
-        }
-    }, []);
     
     const words = useMemo(() => createWords(), []);
 
@@ -192,15 +185,15 @@ const WordCloud = (props: WordCloudProps) => {
         delay = props.delay || 0;
 
     const animationFrame = useCallback((time: number) => {
+        setCanvas();
         if(time >= delay){
-            if(wordsOnScreen.current.length === 0){
-                setCanvas();
+            if(wordsOnScreen.current.length === 0 && size.width > 0 && size.height > 0){
                 wordsOnScreen.current = createWordsOnScreen(words);
             }
             return draw(wordsOnScreen.current);
         }
         return 0;
-    }, [delay, draw, setCanvas, createWordsOnScreen, words]);
+    }, [delay, draw, setCanvas, createWordsOnScreen, words, size]);
 
     useAnimationFrame(animationFrame);
 
