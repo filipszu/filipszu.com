@@ -3,6 +3,7 @@ import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
 import { useWindowSize } from '../../hooks/useScreenSize';
+import { resizeCanvas } from './canvasTools';
 
 export interface WordCloudProps {
     wordMultiplier?: number,
@@ -75,25 +76,12 @@ const WordCloud = (props: WordCloudProps) => {
         return wordsOnScreen;
     }, [wordMultiplier, size]);
 
-    const resizeCanvas = useCallback((canvas: HTMLCanvasElement, width: number, height: number) => {
-        const shouldResize = canvas && 
-            canvas instanceof HTMLCanvasElement && 
-            width > 0 && height > 0 &&
-            (canvas.width !== width || canvas.height !== height);
-        if(shouldResize){
-            canvas.width = width;
-            canvas.height = height;
-            canvas.style.width  = `${width}px`;
-            canvas.style.height = `${height}px`;
-        }
-    }, []);
-
     const setCanvas = useCallback(() => {
         let c = canvasRef.current;
         if(c){
             resizeCanvas(c, size.width, size.height);
         }
-    }, [canvasRef, resizeCanvas, size]);
+    }, [canvasRef, size]);
 
     const wordCanvases = useRef(new Map<string, HTMLCanvasElement>());
     const getWordCanvas = useCallback((word: Word) => {
@@ -124,7 +112,7 @@ const WordCloud = (props: WordCloudProps) => {
         }
         
         return canvas;
-    }, [resizeCanvas, wordCanvases]);
+    }, [wordCanvases]);
 
     const animWord = useCallback((word: Word) => {
         word.vx = word.vx + (Math.random() * 0.5 - 0.25);

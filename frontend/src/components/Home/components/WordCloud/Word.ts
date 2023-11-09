@@ -56,6 +56,7 @@ class Word {
     public vz = 0;
     public index = 0;
     public currentColor = "#000000";
+    
     constructor(_txt: string, _wordNum: number, _x: number, _y: number, _width: number, _height: number, _depth: number){
         this.txt = _txt;
         this.x = _x;
