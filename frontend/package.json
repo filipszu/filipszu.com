@@ -10,6 +10,7 @@
     "@types/node": "^16.11.57",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
+    "js-quadtree": "^3.3.6",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",

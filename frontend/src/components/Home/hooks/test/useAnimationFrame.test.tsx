@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import useAnimationFrame from "../../components/Home/hooks/useAnimationFrame";
+import useAnimationFrame from "../useAnimationFrame";
 
 jest.useFakeTimers();
 

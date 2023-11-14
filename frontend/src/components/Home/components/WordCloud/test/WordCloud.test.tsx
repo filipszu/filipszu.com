@@ -1,37 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import 'jest-canvas-mock';
-import WordCloud from "../../../../../components/Home/components/WordCloud/WordCloud";
+import WordCloud from "../WordCloud";
+import { mockCanvas } from "../../../../../utils/test/canvasTools.test";
 
 describe('WordCloud', () => {
-    type FunctionsToMock = {
-        fillText?: jest.FunctionLike;
-        measureText?: jest.FunctionLike;
-        drawImage?: jest.FunctionLike;
-        clearRect?: jest.FunctionLike;
-    };
-    const mockCanvas = (functionsToMock: FunctionsToMock) => {
-        const mockFillText = functionsToMock.fillText || jest.fn(),
-            mockMeasureText = functionsToMock.measureText || jest.fn(() => ({ width: 100 })),
-            mockDrawImage = functionsToMock.drawImage || jest.fn(),
-            clearRect = functionsToMock.clearRect || jest.fn();
-
-
-        window.HTMLCanvasElement.prototype.getContext = jest.fn().mockImplementation((contextId) => {
-            if (contextId === '2d') {
-                return {
-                  fillText: mockFillText,
-                  measureText: mockMeasureText,
-                  drawImage: mockDrawImage,
-                  clearRect: clearRect,
-                  // Add any other methods that you use in your component
-                  // Add all other necessary properties with mock values
-                };
-              }
-              // Handle other contextIds if necessary
-              return null;
-            });
-    };
-    
+        
     it('renders a canvas element', () => {
         render(<WordCloud />);
         const canvas = screen.getByTestId('word-cloud-canvas');

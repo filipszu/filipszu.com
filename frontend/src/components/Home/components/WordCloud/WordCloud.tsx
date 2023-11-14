@@ -3,7 +3,7 @@ import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
 import { useWindowSize } from '../../hooks/useScreenSize';
-import { resizeCanvas } from './canvasTools';
+import { resizeCanvas } from '../../../../utils/canvasTools';
 
 export interface WordCloudProps {
     wordMultiplier?: number,
@@ -88,6 +88,8 @@ const WordCloud = (props: WordCloudProps) => {
         let canvas = wordCanvases.current.get(word.txt);
         if (!canvas) {
             canvas = document.createElement('canvas');
+            canvas.width = 100;
+            canvas.height = 100;
             wordCanvases.current.set(word.txt, canvas);
         }
         let ctx = canvas.getContext('2d');
@@ -101,7 +103,8 @@ const WordCloud = (props: WordCloudProps) => {
             ctx.textBaseline = textBaseline;
             ctx.font = font;
             ctx.fillStyle = fillStyle;
-            calculatedWidth = ctx.measureText(txt).width;
+            const measurment = ctx.measureText(txt)
+            calculatedWidth = measurment.actualBoundingBoxLeft + measurment.actualBoundingBoxRight;
             resizeCanvas(canvas, calculatedWidth, fontSize);
             ctx.textBaseline = textBaseline; // Need to set the canvas context again after the resize.
             ctx.font = font;
