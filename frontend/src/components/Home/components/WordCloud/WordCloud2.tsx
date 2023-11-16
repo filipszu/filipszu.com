@@ -1,11 +1,12 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import classes from './WordCloud.module.css';
 import { useWindowSize } from "../../hooks/useScreenSize";
 import { WordObject } from "./WordObject";
 import { resizeCanvas } from "../../../../utils/canvasUtils";
 import { drawWords, generateWordObject } from "../../../../utils/wordCanvasUtils";
-import { drawObjectBounds, drawQuadTreeNodes, getQuadTree, getRandomPositionForRect } from "../../../../utils/quadTreeUtils";
+import { drawObjectBounds, drawQuadTreeNodes, getQuadTree } from "../../../../utils/quadTreeUtils";
 import { Rectangle } from "@timohausmann/quadtree-ts";
+import useAnimationFrame from "../../hooks/useAnimationFrame";
 
 type WordCloudProps = {
     wordMultiplier?: number,
@@ -13,6 +14,8 @@ type WordCloudProps = {
     shouldDrawQuadTreeBounds?: boolean,
     shouldDrawWords?: boolean
 };
+
+
 const WordCloud2: FC<WordCloudProps> = ({
     words = ["FilipSZU", "test2", "test3", "test4", "test5"],
     wordMultiplier = 1,
@@ -22,20 +25,28 @@ const WordCloud2: FC<WordCloudProps> = ({
     
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const size = useWindowSize();
+    const [wordObjects, setWordObjects] = useState<WordObject[]>([]);
 
-    useEffect(() => {
-        const wordCount = 100;
-        const wordsA = [];
-        for(let i = 0; i < wordCount; i++){
-            wordsA.push(`test_${i}`);
-        }
+    useAnimationFrame(() => {
+        tick();
+        return 50;
+    });
 
-        if(size.width > 0 && size.height > 0 && canvasRef.current && wordsA.length > 0){
+    const tick = useCallback(() => {
+        if(size.width > 0 && size.height > 0 && canvasRef.current && words.length > 0){
             resizeCanvas(canvasRef.current, size.width, size.height);
             const quadtree = getQuadTree(size.width, size.height);
-            // populate quadtree with words
-            const wordObjects = wordsA.map((word) => generateWordObject(word, size.width, size.height));
-            wordObjects.forEach(word => quadtree.insert(word as Rectangle));
+            
+            if(wordObjects.length === 0){
+                const wordRectacngles = words.map((word) => generateWordObject(word, size.width, size.height));
+                wordRectacngles.forEach(word => quadtree.insert(word as Rectangle));
+                setWordObjects(wordRectacngles);
+            }else{
+                wordObjects.forEach(word => {
+                    quadtree.insert(word as Rectangle);
+                    word.move(quadtree);
+                });
+            }
             
             const ctx = canvasRef.current.getContext('2d');
             if(ctx){
@@ -44,7 +55,7 @@ const WordCloud2: FC<WordCloudProps> = ({
                     drawQuadTreeNodes(canvasRef.current, quadtree);
                     quadtree.retrieve(new Rectangle({x: 0, y: 0, width: size.width, height: size.height})).forEach((word) => {
                         const wordObj = word as WordObject;
-                        drawObjectBounds(canvasRef.current as HTMLCanvasElement, wordObj as Rectangle);
+                        drawObjectBounds(canvasRef.current as HTMLCanvasElement, wordObj as Rectangle, wordObj.isColiding);
                     });
                 }
                 
@@ -53,9 +64,11 @@ const WordCloud2: FC<WordCloudProps> = ({
                 }
             }
         }
+    }, [size.width, size.height, canvasRef, shouldDrawQuadTreeBounds, shouldDrawWords, words, wordObjects]);
 
-    
-    }, [size.width, size.height, canvasRef, shouldDrawQuadTreeBounds, shouldDrawWords]);
+    useEffect(() => {
+        // tick();
+    }, [size.width, size.height, canvasRef, shouldDrawQuadTreeBounds, shouldDrawWords, words, tick]);
 
     return (
         <canvas ref={canvasRef} 

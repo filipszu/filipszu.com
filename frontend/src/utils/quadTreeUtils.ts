@@ -11,12 +11,17 @@ const getQuadTree = (width:number, height:number) => {
     return quadTree;
 };
 
-function drawObjectBounds(canvas: HTMLCanvasElement, object: Rectangle) {
+function drawObjectBounds(canvas: HTMLCanvasElement, object: Rectangle, isColiding: boolean = false) {
     const colorObject = 'rgba(0,0,255,0.5)';
     const ctx = canvas.getContext("2d");
     if(ctx){
         ctx.strokeStyle = colorObject;
-        ctx.strokeRect(object.x, object.y, object.width, object.height);
+        if(isColiding){
+            ctx.fillStyle = 'rgba(0,0,255,0.5)';
+            ctx.fillRect(object.x, object.y, object.width, object.height);
+        }else{
+            ctx.strokeRect(object.x, object.y, object.width, object.height);
+        }
     }
 }
 
