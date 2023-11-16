@@ -1,9 +1,7 @@
-import { Word2 } from "../components/Home/components/WordCloud/Word2";
-
 export type ColorValueHex = `#${string}`;
 export const DEFAULT_FONT_NAME = "MyPhoneN1280Regular";
 export const DEFAULT_FONT_SIZE = 20;
-export const DEFAULT_COLOR = "#000000";
+export const DEFAULT_COLOR:ColorValueHex = "#000000";
 export const DEFAULT_TEXT_BASELINE: CanvasTextBaseline = "top";
 export const DEFAULT_TEXT_ALIGN: CanvasTextAlign = "left";
 
@@ -80,27 +78,7 @@ const setContextForTextManipulation = (canvas: HTMLCanvasElement, options?: SetC
     }
 };
 
-/**
- * Draws a word on a canvas element.
- * @param canvas - The canvas element to draw the word on.
- * @param word - The word to draw.
- * @param options - Optional settings for the context, such as font size, color, and alignment.
- */
-const drawWord = (canvas: HTMLCanvasElement, word: Word2, options?: SetContextForTextManipulationOptions) => {
-    const ctx = canvas.getContext("2d");
-    if(ctx){
-        setContextForTextManipulation(canvas, {
-            fontSize: word.txtSize,
-            textBaseline: options?.textBaseline,
-            textAlign: options?.textAlign,
-            fontName: word.fontName !== "" ? word.fontName : options?.fontName,
-            color: options?.color
-        });
-        ctx.fillText(word.txt, word.x, word.y);
-    }
-};
-
 export {
     resizeCanvas,
-    drawWord
+    setContextForTextManipulation
 }

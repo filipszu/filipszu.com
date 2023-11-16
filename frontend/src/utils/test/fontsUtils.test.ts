@@ -1,4 +1,4 @@
-import { waitForFontLoad } from "../fonts";
+import { waitForFontLoad } from "../fontUtils";
 
 jest.useFakeTimers();
 

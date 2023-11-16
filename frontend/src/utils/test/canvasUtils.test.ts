@@ -1,4 +1,4 @@
-import { resizeCanvas } from "../canvasTools";
+import { resizeCanvas } from "../canvasUtils";
 
 type FunctionsToMock = {
     fillText?: jest.FunctionLike;

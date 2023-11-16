@@ -3,7 +3,7 @@ import classes from './WordCloud.module.css';
 import useAnimationFrame from '../../hooks/useAnimationFrame';
 import Word from './Word';
 import { useWindowSize } from '../../hooks/useScreenSize';
-import { resizeCanvas } from '../../../../utils/canvasTools';
+import { resizeCanvas } from '../../../../utils/canvasUtils';
 
 export interface WordCloudProps {
     wordMultiplier?: number,

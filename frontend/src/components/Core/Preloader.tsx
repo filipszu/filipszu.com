@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { waitForFontLoad } from "../../utils/fonts";
+import { waitForFontLoad } from "../../utils/fontUtils";
 export const DEFAULT_FONT_NAME = "MyPhoneN1280Regular";
 export type PreloaderProps = {};
 const Preloader: FC<PropsWithChildren<PreloaderProps>> = ({children}) => {

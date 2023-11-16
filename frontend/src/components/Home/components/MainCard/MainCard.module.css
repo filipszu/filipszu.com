@@ -10,6 +10,7 @@
 	background-color: rgba(0,0,0,0.85);
 	top: 30%;
 	padding: 10px 15px 0px 15px;
+	display: none;
 }
 
 .Content {

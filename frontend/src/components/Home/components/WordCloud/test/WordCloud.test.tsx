@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import 'jest-canvas-mock';
 import WordCloud from "../WordCloud";
-import { mockCanvas } from "../../../../../utils/test/canvasTools.test";
+import { mockCanvas } from "../../../../../utils/test/canvasUtils.test";
 
 describe('WordCloud', () => {
         
