@@ -29,7 +29,7 @@ const WordCloud2: FC<WordCloudProps> = ({
 
     useAnimationFrame(() => {
         tick();
-        return 50;
+        return 25;
     });
 
     const tick = useCallback(() => {
@@ -65,10 +65,6 @@ const WordCloud2: FC<WordCloudProps> = ({
             }
         }
     }, [size.width, size.height, canvasRef, shouldDrawQuadTreeBounds, shouldDrawWords, words, wordObjects]);
-
-    useEffect(() => {
-        // tick();
-    }, [size.width, size.height, canvasRef, shouldDrawQuadTreeBounds, shouldDrawWords, words, tick]);
 
     return (
         <canvas ref={canvasRef} 
