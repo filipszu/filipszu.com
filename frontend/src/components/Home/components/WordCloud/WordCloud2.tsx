@@ -44,7 +44,7 @@ const WordCloud2: FC<WordCloudProps> = ({
             }else{
                 wordObjects.forEach(word => {
                     quadtree.insert(word as Rectangle);
-                    word.move(quadtree);
+                    word.animate(quadtree);
                 });
             }
             

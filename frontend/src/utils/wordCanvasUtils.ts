@@ -49,8 +49,23 @@ const drawWords = (canvas: HTMLCanvasElement, wordObjects: WordObject[]) => {
     });
 }
 
+const getWordBoundingBox = (txt = "", fontSize = 20, fontName = "Arial"): {width: number, height: number} => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if(ctx){
+        ctx.font = `${fontSize}px ${fontName}`;
+        return {
+            width: ctx.measureText(txt).actualBoundingBoxLeft + ctx.measureText(txt).actualBoundingBoxRight,
+            height: fontSize
+        }
+    } else{
+        throw new Error("Canvas 2d context is null");
+    }
+};
+
 export {
     generateWordObject,
     drawWord,
-    drawWords
+    drawWords,
+    getWordBoundingBox
 }
